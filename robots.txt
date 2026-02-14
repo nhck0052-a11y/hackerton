@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://github.com/nhck0052-a11y/hackerton/sitemap.xml
