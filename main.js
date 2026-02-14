@@ -26,7 +26,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Nav/Download
   const homeBtn = document.getElementById('home-btn');
-  const downloadBtn = document.getElementById('download-btn');
+  const downloadLink = document.getElementById('download-link');
   const effectsLayer = document.getElementById('effects-layer');
   const body = document.body;
 
@@ -105,9 +105,15 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  if (downloadBtn) {
-    downloadBtn.addEventListener('click', () => {
-      html2canvas(book, { backgroundColor: null, scale: 2 }).then(canvas => {
+  if (downloadLink) {
+    downloadLink.addEventListener('click', (e) => {
+      e.preventDefault();
+      // Ensure the book is fully visible/rendered for capture
+      html2canvas(book, { 
+        backgroundColor: null, 
+        scale: 2,
+        useCORS: true 
+      }).then(canvas => {
         const link = document.createElement('a');
         link.download = 'gemini_report.png';
         link.href = canvas.toDataURL();
