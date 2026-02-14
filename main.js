@@ -24,6 +24,12 @@ document.addEventListener('DOMContentLoaded', () => {
   const homeBtn = document.getElementById('home-btn');
   const downloadBtn = document.getElementById('download-btn');
   
+  // Guide Book Elements
+  const guideLink = document.getElementById('guide-link');
+  const guideOverlay = document.getElementById('guide-overlay');
+  const guideBook = document.getElementById('guide-book');
+  const closeGuideBtn = document.getElementById('close-guide-btn');
+
   form.addEventListener('submit', (e) => {
     e.preventDefault();
     resetEffects();
@@ -111,6 +117,27 @@ document.addEventListener('DOMContentLoaded', () => {
       link.click();
     });
   });
+
+  // Guide Book Interaction
+  if (guideLink) {
+    guideLink.addEventListener('click', (e) => {
+      e.preventDefault();
+      guideOverlay.classList.remove('hidden');
+      // Animation Delay
+      setTimeout(() => {
+        guideBook.classList.add('open');
+      }, 100);
+    });
+  }
+
+  if (closeGuideBtn) {
+    closeGuideBtn.addEventListener('click', () => {
+      guideBook.classList.remove('open');
+      setTimeout(() => {
+        guideOverlay.classList.add('hidden');
+      }, 800); // Match CSS transition duration
+    });
+  }
 
   function resetEffects() {
     body.classList.remove('mode-bad', 'mode-good');
