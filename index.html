@@ -3,39 +3,82 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>AI 지갑 로스트(Roast): 팩폭 가계부</title>
+  <title>Gemini 지출 팩폭기</title>
   <link href='/style.css' rel='stylesheet'>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400&family=Noto+Sans+KR:wght@400;700;900&display=swap" rel="stylesheet">
 </head>
 <body>
+  <div class="scan-line"></div>
   <div class="container">
-    <header>
-      <h1>AI 지갑 로스트(Roast): 팩폭 가계부</h1>
-      <p class="subtitle">네 돈, 제대로 쓰고 있는 거 맞아? AI한테 팩폭 한번 당해볼래?</p>
+    <header class="glitch-wrapper">
+      <h1 class="main-copy glitch" data-text="어제 당신의 지출은 투자였나요, 아니면 쓰레기였나요?">어제 당신의 지출은 투자였나요,<br>아니면 <span class="highlight-trash">쓰레기</span>였나요?</h1>
+      <p class="sub-copy">Gemini AI가 당신의 카드 내역을 낱낱이 해부해 드립니다.<br><span class="warning">(주의: 멘탈 약한 분 클릭 금지)</span></p>
     </header>
 
     <main>
-      <div class="input-section">
-        <h2>최근 지출 내역 입력</h2>
-        <div class="input-form">
-          <input type="text" id="item-input" placeholder="지출 항목 (예: 커피, 배달음식)">
-          <input type="number" id="amount-input" placeholder="금액 (원)">
-          <button id="roast-button">팩폭 맞기</button>
-        </div>
-      </div>
+      <section class="input-zone">
+        <form id="spending-form">
+          <div class="input-group">
+            <label for="item">무엇을 샀나요?</label>
+            <input type="text" id="item" placeholder="예: 마라탕" required autocomplete="off">
+          </div>
+          
+          <div class="input-group">
+            <label for="price">얼마를 썼나요?</label>
+            <input type="number" id="price" placeholder="예: 25000" required>
+          </div>
+          
+          <div class="input-group">
+            <label for="reason">그때 기분은?</label>
+            <input type="text" id="reason" placeholder="예: 스트레스 풀려고" required autocomplete="off">
+          </div>
 
-      <div class="roast-section">
-        <h2>AI의 팩폭 한마디</h2>
-        <div id="roast-output" class="roast-output-box">
-          <p>아직 한마디도 안 했어. 빨리 입력해봐!</p>
+          <button type="submit" class="submit-btn">
+            <span class="btn-text">분석 시작 (ENTER)</span>
+            <div class="btn-glitch"></div>
+          </button>
+        </form>
+      </section>
+
+      <section id="result-zone" class="result-zone hidden">
+        <div class="receipt-printer">
+          <div class="receipt" id="receipt">
+            <div class="receipt-header">
+              <p>GEMINI AI POS SYSTEM</p>
+              <p>--------------------------------</p>
+              <p class="timestamp" id="timestamp">2026-02-14 12:00:00</p>
+            </div>
+            <div class="receipt-body">
+              <div class="line-item">
+                <span id="receipt-item">ITEM</span>
+                <span id="receipt-price">0</span>
+              </div>
+              <div class="line-item reason-row">
+                <small>NOTE: <span id="receipt-reason">Reason</span></small>
+              </div>
+              <p>--------------------------------</p>
+              <div class="total-row">
+                <span>TOTAL DAMAGE</span>
+                <span id="receipt-total">0</span>
+              </div>
+              <p>================================</p>
+              <div class="ai-analysis">
+                <p class="ai-label">[ AI ANALYSIS RESULT ]</p>
+                <p id="ai-roast-text" class="roast-text">ANALYZING...</p>
+              </div>
+              <div class="barcode">
+                ||| || ||| | || |||
+              </div>
+              <p class="footer-msg">NO REFUNDS ON BAD CHOICES</p>
+            </div>
+            <div class="receipt-jagged-bottom"></div>
+          </div>
         </div>
-        <button id="share-button">결과 공유하기</button>
-      </div>
+      </section>
     </main>
-
-    <footer>
-      <p>재미는 재미일 뿐, 너무 상처받지 말자!</p>
-    </footer>
   </div>
-  <script defer type="text/javascript" src="/main.js"></script>
+  <script type="module" src="/main.js"></script>
 </body>
 </html>

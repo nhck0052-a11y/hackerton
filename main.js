@@ -1,83 +1,103 @@
 document.addEventListener('DOMContentLoaded', () => {
-  const itemInput = document.getElementById('item-input');
-  const amountInput = document.getElementById('amount-input');
-  const roastButton = document.getElementById('roast-button');
-  const roastOutput = document.getElementById('roast-output');
-  const shareButton = document.getElementById('share-button');
+  const form = document.getElementById('spending-form');
+  const resultZone = document.getElementById('result-zone');
+  
+  // Receipt Elements
+  const rItem = document.getElementById('receipt-item');
+  const rPrice = document.getElementById('receipt-price');
+  const rReason = document.getElementById('receipt-reason');
+  const rTotal = document.getElementById('receipt-total');
+  const rTimestamp = document.getElementById('timestamp');
+  const rRoast = document.getElementById('ai-roast-text');
 
-  const roasts = {
-    coffee: [
-      "또 커피? 네 혈관엔 피 대신 카페인이 흐르겠다.",
-      "그 돈으로 원두를 샀으면 지금쯤 바리스타가 됐겠네.",
-      "오늘도 카페인 수혈로 하루를 버티는구나. 힘내라..."
-    ],
-    delivery: [
-      "배달음식에 쓰는 돈, 네 건강과 맞바꾸는 중인 거 알지?",
-      "요리하는 법을 배우는 게 네 지갑과 건강에 더 이로울걸?",
-      "'오늘 뭐 먹지?' 고민 시간 > 실제 먹는 시간. 인정?"
-    ],
-    shopping: [
-      "그거 진짜 필요해서 산 거 맞아? 그냥 스트레스 풀려고 산 거 아니고?",
-      "네 옷장은 이미 충분히 화려해. 이제 그만.",
-      "텅장(텅 빈 통장)의 주범. 바로 너!"
-    ],
-    alcohol: [
-      "간에 대한 예의가 아니지. 어?",
-      "필름 끊긴 건 기억 못 해도, 카드값은 기억해야지.",
-      "술값 아껴서 적금 부었으면, 지금쯤 건물주."
-    ],
-    general: [
-      "이 돈이면 국밥이 몇 그릇인데...",
-      "너 월급 통장을 스쳐 지나가는 바람 같은 존재지?",
-      "네 지갑은 '밑 빠진 독'이라는 단어를 몸소 증명하고 있구나.",
-      "티끌 모아 티끌. 수고했다.",
-      "이 작은 돈으로도 사치를 부리는 너, 꽤 대단한데?",
-      "소비 요정? 아니, 그냥 호구."
-    ]
-  };
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    
+    // 1. Get Values
+    const item = document.getElementById('item').value;
+    const price = parseInt(document.getElementById('price').value);
+    const reason = document.getElementById('reason').value;
 
-  const getRoast = (item, amount) => {
-    let roastCategory = 'general';
-    if (item.includes('커피') || item.includes('카페')) {
-      roastCategory = 'coffee';
-    } else if (item.includes('배달') || item.includes('음식')) {
-      roastCategory = 'delivery';
-    } else if (item.includes('쇼핑') || item.includes('옷') || item.includes('신발')) {
-      roastCategory = 'shopping';
-    } else if (item.includes('술') || item.includes('맥주') || item.includes('소주')) {
-      roastCategory = 'alcohol';
-    }
+    // 2. Validate (Basic)
+    if (!item || isNaN(price) || !reason) return;
 
-    const availableRoasts = roasts[roastCategory];
-    const randomIndex = Math.floor(Math.random() * availableRoasts.length);
-    return availableRoasts[randomIndex];
-  };
+    // 3. Populate Receipt
+    rItem.textContent = item.length > 15 ? item.substring(0, 15) + '...' : item;
+    rPrice.textContent = '₩' + price.toLocaleString();
+    rReason.textContent = reason;
+    rTotal.textContent = '₩' + price.toLocaleString();
+    rTimestamp.textContent = new Date().toLocaleString('ko-KR');
 
-  roastButton.addEventListener('click', () => {
-    const item = itemInput.value.trim();
-    const amount = amountInput.value;
+    // 4. Generate AI Roast (Simulated for Prototype)
+    const roast = generateRoast(item, price, reason);
+    rRoast.textContent = ""; // Clear previous
+    typeWriter(roast, rRoast); // Typing effect
 
-    if (!item || !amount) {
-      roastOutput.innerHTML = '<p style="color: red;">항목과 금액을 모두 입력해줘!</p>';
-      return;
-    }
+    // 5. Show Result with Animation
+    resultZone.classList.remove('hidden');
+    
+    // Play sound effect (Optional placeholder)
+    // playPrinterSound();
 
-    const roastMessage = getRoast(item, amount);
-    roastOutput.innerHTML = `<p>${roastMessage}</p>`;
-    itemInput.value = '';
-    amountInput.value = '';
-  });
-
-  shareButton.addEventListener('click', async () => {
-    const roastText = roastOutput.textContent;
-    if (roastText && roastText !== "아직 한마디도 안 했어. 빨리 입력해봐!") {
-      try {
-        await navigator.clipboard.writeText(`[AI 지갑 로스트] ${roastText}`);
-        alert('결과가 클립보드에 복사되었습니다!');
-      } catch (err) {
-        console.error('클립보드 복사 실패: ', err);
-        alert('결과 복사에 실패했습니다.');
-      }
-    }
+    // Scroll to result
+    resultZone.scrollIntoView({ behavior: 'smooth', block: 'start' });
   });
 });
+
+/**
+ * Simulates the Gemini AI response based on simple heuristics.
+ * In a real app, this would be: await fetch('/api/gemini', ...)
+ */
+function generateRoast(item, price, reason) {
+  const expensive = price > 50000;
+  const cheap = price < 5000;
+  const food = ['마라탕', '커피', '치킨', '술', '밥', '파스타', '떡볶이'].some(f => item.includes(f));
+  
+  let roasts = [];
+
+  if (expensive) {
+    roasts.push(
+      `₩${price.toLocaleString()}? 너 혹시 재벌 3세야? ${item}에 이 돈을 태워? 통장 잔고가 울고 있어.`,
+      `와... ${item} 하나에 이 가격? 내일부턴 숨만 쉬고 살아야겠네. "투자"라고 우기지 마.`,
+      `진지하게 묻는데, 이거 사면 네 인생이 달라져? 아니지? 그냥 돈 버린 거야.`
+    );
+  } else if (cheap) {
+    roasts.push(
+      `겨우 ₩${price.toLocaleString()}? 짠내 난다 짠내 나. 근데 이런 것도 모이면 태산인 거 알지?`,
+      `소박하네. 근데 ${item} 먹고 기분이 나아졌어? 그게 문제야. 푼돈으로 행복을 사려는 습관.`,
+      `가성비 따지면서 ${item} 산 거야? 그래, 잘했다. 통장은 지켰지만 자존심은?`
+    );
+  } else {
+    roasts.push(
+      `${item}.. 애매하다 애매해. 차라리 저축을 하지 그랬어?`,
+      `"${reason}"? 핑계는 청산유수네. 그냥 사고 싶었다고 솔직히 말해.`,
+      `남들은 주식으로 돈 불릴 때 넌 ${item}으로 지방만 불리는구나.`
+    );
+  }
+
+  if (food && reason.includes("스트레스")) {
+    roasts.push(
+      `스트레스 받는다고 먹고, 살쪄서 스트레스 받고, 또 먹고... 무한 굴레의 시작.`,
+      `먹는 걸로 푸는 건 하수야. 통장 잔고 보면 스트레스 더 받을걸?`
+    );
+  }
+
+  // Randomly pick one
+  return roasts[Math.floor(Math.random() * roasts.length)];
+}
+
+// Simple Typewriter Effect for the Text
+function typeWriter(text, element) {
+  let i = 0;
+  element.textContent = '';
+  const speed = 30; // ms
+
+  function type() {
+    if (i < text.length) {
+      element.textContent += text.charAt(i);
+      i++;
+      setTimeout(type, speed);
+    }
+  }
+  type();
+}
