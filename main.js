@@ -205,6 +205,58 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  // Finance Quotes Logic
+  const quotes = [
+    { text: "소비하고 남은 돈을 저축하는 것이 아니라, 저축하고 남은 돈을 소비하라.", author: "워렌 버핏" },
+    { text: "가격은 당신이 지불하는 것이고, 가치는 당신이 얻는 것이다.", author: "워렌 버핏" },
+    { text: "잠자는 동안에도 돈이 들어오는 방법을 찾아내지 못한다면, 당신은 죽을 때까지 일해야 할 것이다.", author: "워렌 버핏" },
+    { text: "부자가 되기 위해 필요한 것은 똑똑함이 아니라, 인내심이다.", author: "찰리 멍거" },
+    { text: "투자의 성공 여부는 얼마나 오랫동안 세상의 비관론을 무시할 수 있는지에 달려있다.", author: "피터 린치" },
+    { text: "비관론이 극에 달했을 때가 가장 좋은 매수 기회이며, 낙관론이 극에 달했을 때가 가장 좋은 매도 기회다.", author: "존 템플턴" },
+    { text: "부자들은 자산을 산다. 가난한 사람들은 오직 지출만 한다. 중산층은 부채를 자산이라고 착각하며 산다.", author: "로버트 기요사키" },
+    { text: "투자가 즐겁다면, 당신은 아마도 돈을 벌지 못하고 있을 것이다. 좋은 투자는 지루한 법이다.", author: "조지 소로스" },
+    { text: "투자란 철저한 분석 하에 원금의 안전과 적절한 수익을 약속하는 행위다.", author: "벤자민 그레이엄" },
+    { text: "절약하고 투자하라. 그리고 기다려라. 그것이 전부다.", author: "짐 로저스" },
+    { text: "사소한 비용을 조심하라. 작은 구멍이 거대한 배를 침몰시킨다.", author: "벤자민 프랭클린" },
+    { text: "돈을 빌리러 가는 것은 자유를 팔러 가는 것이다.", author: "벤자민 프랭클린" },
+    { text: "당신이 번 돈보다 적게 쓰는 법을 안다면, 당신은 현자의 돌을 가진 것이다.", author: "토마스 제퍼슨" },
+    { text: "가난한 사람은 가진 것이 적은 사람이 아니라, 더 많은 것을 바라는 사람이다.", author: "세네카" },
+    { text: "복리는 세계 8대 불가사의다. 이를 이해하는 자는 돈을 벌고, 이해하지 못하는 자는 돈을 낸다.", author: "알베르트 아인슈타인" },
+    { text: "가난한 사람에게 가장 필요한 것은 돈이 아니라, 절약하는 지혜다.", author: "탈무드" },
+    { text: "돈이 말을 하면, 진실은 침묵한다.", author: "속담" },
+    { text: "돈이 많은 사람과 부자인 사람은 다르다.", author: "코코 샤넬" },
+    { text: "젊었을 때는 돈이 인생의 전부라고 생각했다. 늙고 보니 그 생각이 맞았다.", author: "오스카 와일드" },
+    { text: "돈은 최선의 하인이자, 최악의 주인이다.", author: "프랜시스 베이컨" },
+    { text: "신용카드를 잘라버려라. 빚을 갚는 것이야말로 최고의 수익률을 보장하는 투자다.", author: "마크 큐반" },
+    { text: "남들처럼 살지 마라. 그래야 나중에는 남들이 살 수 없는 삶을 살 수 있다.", author: "데이브 램지" },
+    { text: "돈을 버는 것은 운이 아니다. 그것은 기술이다.", author: "나발 라비칸트" },
+    { text: "부자가 되는 유일한 방법은 가진 돈을 쓰지 않는 것이다. 이것이 부를 축적하는 유일한 길이다.", author: "모건 하우절" },
+    { text: "가난하게 태어난 것은 당신의 실수가 아니지만, 가난하게 죽는 것은 당신의 실수다.", author: "빌 게이츠" },
+    { text: "돈은 단순히 노동력과 재화를 교환하는 정보 시스템일 뿐이다.", author: "일론 머스크" },
+    { text: "검소함은 혁신을 낳는다. 탈출구가 없을 때 비로소 창의력이 발휘된다.", author: "제프 베조스" },
+    { text: "성공의 비밀은 '복리'의 힘을 당신의 편으로 만드는 것이다.", author: "토니 로빈스" }
+  ];
+
+  let currentQuoteIndex = 0;
+  const quoteContainer = document.getElementById('quote-container');
+  const quoteText = document.getElementById('quote-text');
+  const quoteAuthor = document.getElementById('quote-author');
+
+  function updateQuote() {
+    if (!quoteContainer || !quoteText || !quoteAuthor) return;
+    
+    quoteContainer.classList.add('fade');
+    
+    setTimeout(() => {
+      currentQuoteIndex = (currentQuoteIndex + 1) % quotes.length;
+      quoteText.textContent = `"${quotes[currentQuoteIndex].text}"`;
+      quoteAuthor.textContent = `- ${quotes[currentQuoteIndex].author} -`;
+      quoteContainer.classList.remove('fade');
+    }, 800); // Half of transition time
+  }
+
+  setInterval(updateQuote, 5000);
+
   function resetEffects() {
     if (body) body.classList.remove('mode-bad', 'mode-good');
     if (effectsLayer) effectsLayer.innerHTML = '';
