@@ -459,33 +459,40 @@ input:focus {
 
 #download-link {
   font-family: var(--font-mono);
-  font-size: 0.9rem;
-  color: var(--text-color);
+  font-size: 1.1rem; /* Larger */
+  font-weight: 900; /* Boldest */
+  color: #fff; /* Bright white */
   text-decoration: none;
-  border-bottom: 1px solid var(--text-color);
-  padding-bottom: 2px;
+  border-bottom: 2px solid var(--highlight-color); /* Thicker underline */
+  padding-bottom: 5px;
   transition: all 0.2s;
   cursor: pointer;
+  letter-spacing: 0.5px;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.5);
 }
 
 #download-link:hover {
   color: var(--highlight-color);
-  border-bottom-color: var(--highlight-color);
+  border-bottom-color: #fff;
+  text-shadow: 0 0 10px var(--highlight-color);
 }
 
 /* Nav Controls (Home Button) */
 .nav-controls {
   text-align: center;
-  margin-top: 10px;
+  margin-top: 20px;
 }
 .secondary-btn {
-  padding: 8px 20px;
+  padding: 12px 35px;
   background: transparent;
   color: var(--text-color);
-  border: 1px solid var(--text-color);
+  border: 2px solid var(--text-color); /* Thicker border */
   font-family: var(--font-mono);
-  font-size: 0.8rem;
+  font-size: 1rem; /* Larger */
+  font-weight: 900; /* Boldest */
   cursor: pointer;
+  text-transform: uppercase;
+  letter-spacing: 1px;
 }
 .secondary-btn:hover { background: var(--text-color); color: var(--bg-color); }
 
