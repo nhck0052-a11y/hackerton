@@ -1,14 +1,41 @@
 <!doctype html>
-<html lang="en">
+<html lang="ko">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Hello World</title>
+  <title>AI 지갑 로스트(Roast): 팩폭 가계부</title>
   <link href='/style.css' rel='stylesheet'>
 </head>
 <body>
-  <h1>Hello, world!</h1>
-  <button onclick="console.log('hello');">Press me</button>
+  <div class="container">
+    <header>
+      <h1>AI 지갑 로스트(Roast): 팩폭 가계부</h1>
+      <p class="subtitle">네 돈, 제대로 쓰고 있는 거 맞아? AI한테 팩폭 한번 당해볼래?</p>
+    </header>
+
+    <main>
+      <div class="input-section">
+        <h2>최근 지출 내역 입력</h2>
+        <div class="input-form">
+          <input type="text" id="item-input" placeholder="지출 항목 (예: 커피, 배달음식)">
+          <input type="number" id="amount-input" placeholder="금액 (원)">
+          <button id="roast-button">팩폭 맞기</button>
+        </div>
+      </div>
+
+      <div class="roast-section">
+        <h2>AI의 팩폭 한마디</h2>
+        <div id="roast-output" class="roast-output-box">
+          <p>아직 한마디도 안 했어. 빨리 입력해봐!</p>
+        </div>
+        <button id="share-button">결과 공유하기</button>
+      </div>
+    </main>
+
+    <footer>
+      <p>재미는 재미일 뿐, 너무 상처받지 말자!</p>
+    </footer>
+  </div>
   <script defer type="text/javascript" src="/main.js"></script>
 </body>
 </html>

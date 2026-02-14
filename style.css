@@ -1,1 +1,132 @@
-/* Add styles here */
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&display=swap');
+
+:root {
+  --primary-color: #ff4b5c;
+  --secondary-color: #1a1a1a;
+  --background-color: #f0f2f5;
+  --text-color: #333;
+  --white-color: #fff;
+  --border-radius: 12px;
+  --box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Noto Sans KR', sans-serif;
+  background-color: var(--background-color);
+  color: var(--text-color);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 20px;
+}
+
+.container {
+  width: 100%;
+  max-width: 600px;
+  background-color: var(--white-color);
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+  padding: 40px;
+  text-align: center;
+}
+
+header h1 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--primary-color);
+  margin-bottom: 10px;
+}
+
+.subtitle {
+  font-size: 1.1rem;
+  color: #666;
+  margin-bottom: 40px;
+}
+
+.input-section h2, .roast-section h2 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 20px;
+  text-align: left;
+}
+
+.input-form {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 40px;
+}
+
+.input-form input {
+  flex: 1;
+  padding: 15px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 1rem;
+}
+
+.input-form input:focus {
+  outline: none;
+  border-color: var(--primary-color);
+}
+
+#roast-button {
+  padding: 15px 25px;
+  border: none;
+  background-color: var(--primary-color);
+  color: var(--white-color);
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+#roast-button:hover {
+  background-color: #e04352;
+}
+
+.roast-output-box {
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: var(--border-radius);
+  padding: 30px;
+  margin-bottom: 20px;
+  min-height: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.roast-output-box p {
+  font-size: 1.2rem;
+  line-height: 1.6;
+  font-weight: 500;
+}
+
+#share-button {
+  padding: 12px 25px;
+  border: none;
+  background-color: var(--secondary-color);
+  color: var(--white-color);
+  border-radius: 8px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+#share-button:hover {
+  background-color: #333;
+}
+
+footer {
+  margin-top: 40px;
+  font-size: 0.9rem;
+  color: #888;
+}
