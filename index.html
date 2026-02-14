@@ -362,6 +362,21 @@
     <button id="close-guide-btn" class="close-guide-btn">닫기 (CLOSE)</button>
   </div>
 
+  <!-- Preview Modal -->
+  <div id="preview-modal" class="modal hidden">
+    <div class="modal-content preview-content">
+      <span class="close-modal" id="close-preview-btn">&times;</span>
+      <h3>📸 생성된 보고서 미리보기</h3>
+      <p>이미지를 길게 누르거나 우클릭하여 저장할 수도 있습니다.</p>
+      <div id="preview-image-container" class="preview-image-container">
+        <!-- Captured Canvas Image will be injected here -->
+      </div>
+      <div class="preview-actions">
+        <a id="final-download-btn" class="action-btn">파일로 저장하기 (.png)</a>
+      </div>
+    </div>
+  </div>
+
   <script type="module" src="/main.js"></script>
 </body>
 </html>
