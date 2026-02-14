@@ -2,6 +2,9 @@ document.addEventListener('DOMContentLoaded', () => {
   const form = document.getElementById('spending-form');
   const resultZone = document.getElementById('result-zone');
   
+  // Book Elements
+  const book = document.getElementById('result-book');
+  
   // Receipt Elements
   const rItem = document.getElementById('receipt-item');
   const rPrice = document.getElementById('receipt-price');
@@ -11,7 +14,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const rRoast = document.getElementById('ai-roast-text');
   
   // Prescription Elements
-  const rxCard = document.getElementById('prescription');
   const rxGrade = document.getElementById('rx-grade');
   const rxActions = document.getElementById('rx-actions');
   
@@ -21,15 +23,9 @@ document.addEventListener('DOMContentLoaded', () => {
   const receiptContainer = document.querySelector('.receipt-printer');
   const homeBtn = document.getElementById('home-btn');
   const downloadBtn = document.getElementById('download-btn');
-  
-  // Whitepaper Elements
-  const whitepaperLink = document.getElementById('whitepaper-link');
-  const whitepaperModal = document.getElementById('whitepaper-modal');
-  const closeModal = document.querySelector('.close-modal');
 
   form.addEventListener('submit', (e) => {
     e.preventDefault();
-    
     resetEffects();
 
     // 1. Get Values
@@ -39,86 +35,68 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (!item || isNaN(price) || !reason) return;
 
-    // 3. Populate Receipt
+    // 2. Populate Receipt (Left Page)
     rItem.textContent = item.length > 15 ? item.substring(0, 15) + '...' : item;
     rPrice.textContent = '₩' + price.toLocaleString();
     rReason.textContent = reason;
     rTotal.textContent = '₩' + price.toLocaleString();
-    rTimestamp.textContent = new Date().toLocaleString('ko-KR');
+    rTimestamp.textContent = new Date().toLocaleDateString('ko-KR');
 
-    // 4. Generate Analysis (Simulated Gemini API)
+    // 3. Generate Analysis (Simulated Logic based on Whitepaper)
     const result = generateAnalysis(item, price, reason);
     
     // Fill Receipt Roast
     rRoast.textContent = ""; 
     typeWriter(result.roast_message, rRoast); 
     
-    // Fill Prescription
+    // Fill Prescription (Right Page)
     rxGrade.textContent = result.grade;
     rxActions.innerHTML = result.action_items.map(action => `<li>${action}</li>`).join('');
     
-    // 5. Trigger Visual Effects
-    triggerEffects(result.type);
-
-    // 6. Show Result
+    // 4. Show Result & Trigger Book Animation
     resultZone.classList.remove('hidden');
     
-    // Show Prescription after delay
-    setTimeout(() => {
-        rxCard.classList.add('visible');
-    }, 1000);
-    
+    // Trigger Effects (Visual)
+    triggerEffects(result.type);
+
+    // Scroll to book
     resultZone.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+    // Open the book after a slight delay
+    setTimeout(() => {
+      book.classList.add('open');
+    }, 500);
   });
 
   homeBtn.addEventListener('click', () => {
-    resultZone.classList.add('hidden');
-    rxCard.classList.remove('visible');
-    form.reset();
-    resetEffects();
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    book.classList.remove('open');
+    setTimeout(() => {
+        resultZone.classList.add('hidden');
+        form.reset();
+        resetEffects();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }, 500); // Wait for close animation
   });
 
-  // Download Functionality
+  // Download Functionality (Captures the whole book wrapper)
   downloadBtn.addEventListener('click', () => {
-    const captureArea = document.getElementById('capture-area');
+    // We capture the '.book' element
+    // To capture "open" state properly in 2D, we might need to temporarily flatten it or capture pages side-by-side
+    // For simplicity, we capture the currently visible book area.
     
-    // Temporarily remove transform/perspective for clean capture
-    resultZone.style.perspective = 'none';
-    const receipt = document.getElementById('receipt');
-    receipt.style.transform = 'none';
+    // Clone the book to a hidden container to flatten it for capture
+    const captureTarget = book;
     
-    html2canvas(captureArea, {
-      backgroundColor: body.classList.contains('mode-good') ? '#fcf8e3' : '#0a0a0a',
-      scale: 2 // High res
+    html2canvas(captureTarget, {
+      backgroundColor: null, // Transparent background
+      scale: 2
     }).then(canvas => {
       const link = document.createElement('a');
-      link.download = 'gemini-diagnosis.png';
+      link.download = 'gemini_report.png';
       link.href = canvas.toDataURL();
       link.click();
-      
-      // Restore styles
-      resultZone.style.perspective = '1000px';
-      receipt.style.transform = ''; // Clear inline style to revert to CSS
     });
   });
-
-  // Whitepaper Modal Logic
-  whitepaperLink.addEventListener('click', (e) => {
-    e.preventDefault();
-    whitepaperModal.classList.remove('hidden');
-  });
-
-  closeModal.addEventListener('click', () => {
-    whitepaperModal.classList.add('hidden');
-  });
-  
-  window.addEventListener('click', (e) => {
-    if (e.target === whitepaperModal) {
-      whitepaperModal.classList.add('hidden');
-    }
-  });
-
 
   function resetEffects() {
     body.classList.remove('mode-bad', 'mode-good');
@@ -136,14 +114,15 @@ document.addEventListener('DOMContentLoaded', () => {
         const stamp = document.createElement('div');
         stamp.classList.add('stamp', 'bad');
         stamp.innerText = '탕진\nWARNING';
-        receiptContainer.appendChild(stamp);
-      }, 1500);
+        // Append stamp to the Receipt Page inside the book
+        document.querySelector('.book-page.left .page-content').appendChild(stamp);
+      }, 1000);
 
       const marquee = document.createElement('div');
       marquee.classList.add('bad-marquee');
       const warnText = "⚠ 경고: 통장 잔고 비상! 지갑 심폐소생술 필요 ⚠ 💸 내 돈 어디갔니? 💸 ";
       const repeatedText = warnText.repeat(10);
-      marquee.innerHTML = `<div class=\"bad-marquee-track\"><span>${repeatedText}</span><span>${repeatedText}</span></div>`;
+      marquee.innerHTML = `<div class="bad-marquee-track"><span>${repeatedText}</span><span>${repeatedText}</span></div>`;
       document.body.appendChild(marquee);
       
       createFlyingEmojis('💸');
@@ -154,8 +133,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const stamp = document.createElement('div');
         stamp.classList.add('stamp', 'good');
         stamp.innerHTML = 'Certified:<br>Smart Spender';
-        receiptContainer.appendChild(stamp);
-      }, 1500);
+        document.querySelector('.book-page.left .page-content').appendChild(stamp);
+      }, 1000);
       
       createCoinRain();
     }
@@ -196,7 +175,8 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 /**
- * Simulates Gemini AI Analysis returning structured JSON
+ * Logic based on "Tech Whitepaper"
+ * 제1장: 지능형 진단 로직 (Simulated)
  */
 function generateAnalysis(item, price, reason) {
   const expensive = price > 50000;
@@ -205,49 +185,53 @@ function generateAnalysis(item, price, reason) {
   const tech = ['컴퓨터', '맥북', '모니터', '키보드', '아이패드', '갤럭시', '아이폰', '에어팟'].some(t => item.includes(t));
   const goodItems = ['책', '강의', '기부', '저축', '운동', '헬스', '영양제', '선물', '효도'].some(g => item.includes(g));
 
+  // "보상 심리", "충동성" keywords analysis
+  const emotional = reason.includes('스트레스') || reason.includes('우울') || reason.includes('기분');
+  const impulse = reason.includes('그냥') || reason.includes('세일') || reason.includes('예뻐서');
+
   let type = 'BAD';
   let grade = 'F';
   let roast = "";
   let actions = [];
 
-  if (goodItems || (cheap && !food && !tech)) {
+  if (goodItems || (cheap && !food && !tech && !impulse)) {
     type = 'GOOD';
-    grade = 'A+';
+    grade = 'A';
     roast = `오... ${item}? 이건 좀 의외네. 미래를 위한 투자라고 인정해줄게. 칭찬 스티커 하나.`;
     actions = [
       "이 흐름 유지해서 적금 통장 하나 더 만들기",
-      "주변 사람들에게 '나 이렇게 산다'고 자랑하기 (동기부여)",
+      "주변 사람들에게 '나 이렇게 산다'고 자랑하기",
       "남은 돈으로 스스로에게 작은 보상 해주기"
     ];
   } else {
-    type = 'BAD';
+    type = 'BAD'; // Default to Bad
     
     if (tech) {
       grade = 'D';
-      roast = `오.. 장비병 도졌어? ${item} 사면 실력이 늘 것 같지? 응 아니야. 손가락이 문제야.`;
+      roast = `장비병 도졌어? ${item} 사면 실력이 늘 것 같지? 응 아니야. 손가락이 문제야.`;
       actions = [
         "일단 산 거 본전 뽑을 때까지 매일 2시간씩 쓰기",
         "중고나라 시세 미리 알아두기 (3개월 뒤를 위해)",
         "다음 달 카드값 나갈 때까지 라면만 먹기"
       ];
+    } else if (emotional && food) {
+       grade = 'F';
+       roast = `스트레스 받는다고 먹고, 살쪄서 스트레스 받고... 이 무한 굴레, 언제 끊을래?`;
+       actions = [
+         "배달 앱 삭제하고 직접 요리하기",
+         "스트레스 받을 땐 먹지 말고 운동장 뛰기",
+         "거울 보고 '나는 배부르다' 3번 외치기"
+       ];
     } else if (expensive) {
       grade = 'F';
       roast = `₩${price.toLocaleString()}? 너 혹시 재벌 3세야? ${item}에 이 돈을 태워? 통장 잔고가 울고 있어.`;
       actions = [
         "가계부 어플 설치하고 오늘 지출 빨간색으로 표시하기",
-        "일주일 동안 배달 앱 삭제 및 커피 금지",
+        "일주일 동안 무지출 챌린지 도전",
         "친구들에게 '나 거지임' 선언하고 밥 얻어먹기"
       ];
-    } else if (cheap) {
-      grade = 'C';
-      roast = `겨우 ₩${price.toLocaleString()}? 짠내 난다 짠내 나. 근데 이런 것도 모이면 태산인 거 알지?`;
-      actions = [
-        "티끌 모아 티끌이라지만, 일단 모아보기",
-        "편의점 갈 때마다 1분씩 고민하기",
-        "소확행이라는 핑계로 하루 3번 이상 결제 금지"
-      ];
     } else {
-      grade = 'D-';
+      grade = 'C-';
       roast = `${item}.. 애매하다 애매해. 차라리 저축을 하지 그랬어?`;
       actions = [
         "왜 샀는지 일기장에 3줄 이상 반성문 쓰기",

@@ -8,6 +8,9 @@
   --font-main: 'Noto Sans KR', sans-serif;
   --font-mono: 'Courier Prime', monospace;
   --good-color: #00cc66; /* Green */
+  --book-bg: #1e1e1e;
+  --book-page-bg: #fff;
+  --book-spine: #333;
 }
 
 * {
@@ -219,217 +222,179 @@ input:focus {
   box-shadow: 0 0 15px var(--accent-color);
 }
 
-/* Receipt Styles */
-.result-zone {
+/* ================== 3D BOOK UI ================== */
+.result-zone.hidden { display: none; }
+
+.book-wrapper {
+  perspective: 1500px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 450px; /* Adjust based on content */
+  margin-bottom: 30px;
+}
+
+.book {
+  width: 500px; /* Total width (250px per page) */
+  height: 380px;
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform 1s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.book.open {
+  transform: translateX(125px) rotateY(0deg); /* Shift right to center open book */
+}
+
+/* Pages */
+.book-cover, .book-page {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 250px;
+  height: 100%;
+  backface-visibility: hidden;
+  transform-origin: left center;
+  transition: transform 1s cubic-bezier(0.2, 0.8, 0.2, 1);
+  box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+}
+
+/* Front Cover */
+.book-cover {
+  background: #111;
+  color: var(--highlight-color);
+  z-index: 10;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  border: 2px solid #333;
+  transform: rotateY(0deg);
+  border-radius: 4px 0 0 4px;
+}
+
+.cover-content h2 {
+  font-family: var(--font-mono);
+  font-size: 1.5rem;
+  border: 4px solid var(--highlight-color);
+  padding: 10px;
+  margin-bottom: 20px;
+}
+
+.book.open .book-cover {
+  transform: rotateY(-180deg);
+  z-index: 0;
+}
+
+/* Left Page (Receipt) */
+.book-page.left {
+  background: #fdfdfd;
+  z-index: 5;
+  transform: rotateY(0deg); /* Initially hidden under cover */
+  border-right: 1px solid #ddd;
+}
+
+.book.open .book-page.left {
+  /* It stays flat but becomes visible when cover flips */
+  z-index: 1;
+}
+
+/* Right Page (Prescription) */
+.book-page.right {
+  background: #fff;
+  z-index: 1;
+  left: 250px; /* Positioned to the right */
+  transform: rotateY(0deg);
+  transform-origin: left center;
+  border-left: 1px solid #eee;
+}
+
+/* Page Content Styling */
+.page-content {
+  padding: 15px;
+  height: 100%;
+  overflow-y: auto;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: #000;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  perspective: 1000px;
-  width: 100%;
 }
 
-.result-zone.hidden {
-  display: none;
-}
-
-.result-actions {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: flex-start;
-  gap: 20px;
-  width: 100%;
-  flex-wrap: wrap; /* Stack on mobile */
-}
-
-.receipt-printer {
-  position: relative;
-  width: 100%;
-  max-width: 320px;
-}
-
+/* Mini Receipt in Book */
 .receipt {
   background: var(--receipt-bg);
-  color: var(--receipt-text);
-  font-family: var(--font-mono);
-  padding: 20px 20px 40px 20px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-  transform-origin: top center;
-  animation: print-receipt 1.5s ease-out forwards;
-  position: relative;
-}
-
-@keyframes print-receipt {
-  0% { transform: translateY(-100px) rotateX(-20deg); opacity: 0; }
-  100% { transform: translateY(0) rotateX(0deg); opacity: 1; }
-}
-
-.receipt-header { text-align: center; margin-bottom: 15px; font-size: 0.8rem; }
-.timestamp { font-size: 0.7rem; }
-.receipt-body { font-size: 0.9rem; }
-.line-item { display: flex; justify-content: space-between; margin-bottom: 5px; font-weight: 700; text-transform: uppercase; }
-.reason-row { margin-bottom: 10px; color: #555; font-style: italic; }
-.total-row { display: flex; justify-content: space-between; font-weight: 900; font-size: 1.1rem; margin: 10px 0; }
-.ai-analysis { margin-top: 15px; border: 2px dashed #000; padding: 10px; }
-.ai-label { font-weight: 900; text-align: center; margin-bottom: 5px; font-size: 0.8rem; }
-.roast-text { font-size: 0.85rem; line-height: 1.4; text-align: left; }
-.barcode { font-family: 'Libre Barcode 39 Text', cursive; text-align: center; margin: 20px 0; font-size: 1.5rem; letter-spacing: 5px; font-weight: 900; overflow: hidden; white-space: nowrap; }
-.footer-msg { text-align: center; font-size: 0.7rem; font-weight: 700; }
-
-.receipt-jagged-bottom {
-  position: absolute; bottom: 0; left: 0; width: 100%; height: 10px;
-  background: linear-gradient(135deg, transparent 50%, var(--receipt-bg) 50%), linear-gradient(45deg, var(--receipt-bg) 50%, transparent 50%);
-  background-size: 20px 20px; background-repeat: repeat-x;
-  transform: rotate(180deg); margin-bottom: -10px;
-}
-
-/* PRESCRIPTION CARD (Rx) */
-.prescription-card {
-  background: #fff;
-  width: 100%;
-  max-width: 320px;
-  padding: 20px;
-  border: 4px solid #000;
-  box-shadow: 5px 5px 0px #333;
-  font-family: var(--font-mono);
   color: #000;
-  display: flex;
-  flex-direction: column;
-  opacity: 0; /* Animated via JS */
-  transform: translateY(20px);
-  transition: all 0.5s ease 1s; /* Delay appearance */
-}
-
-.prescription-card.visible {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-.rx-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  border-bottom: 2px solid #000;
-  padding-bottom: 10px;
-  margin-bottom: 15px;
-}
-
-.rx-symbol { font-size: 2.5rem; font-weight: bold; line-height: 1; }
-.clinic-name { font-weight: 900; font-size: 1rem; }
-
-.diagnosis-box {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background: #eee;
   padding: 10px;
-  margin-bottom: 15px;
-  border: 2px solid #000;
-}
-
-.grade {
-  font-size: 2rem;
-  font-weight: 900;
-  color: var(--accent-color);
-}
-
-.action-plan ul {
-  list-style-type: square;
-  padding-left: 20px;
-  margin-top: 5px;
-  font-size: 0.85rem;
-  line-height: 1.4;
-}
-
-.action-plan li { margin-bottom: 5px; }
-
-.rx-footer {
-  margin-top: 20px;
-  border-top: 2px dashed #000;
-  padding-top: 10px;
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-end;
-}
-
-.qr-placeholder {
-  width: 40px; height: 40px; background: #000; color: #fff;
-  display: flex; align-items: center; justify-content: center;
   font-size: 0.7rem;
+  border: 1px dashed #ccc;
+  width: 100%;
 }
+.receipt-header { text-align: center; margin-bottom: 10px; }
+.line-item { display: flex; justify-content: space-between; font-weight: bold; }
+.reason-row { font-style: italic; color: #555; margin-bottom: 5px; }
+.total-row { display: flex; justify-content: space-between; font-weight: 900; margin-top: 5px; border-top: 1px dashed #000; padding-top: 5px; }
+.ai-analysis { margin-top: 10px; background: #eee; padding: 5px; border-left: 3px solid #000; }
+.roast-text { font-size: 0.7rem; line-height: 1.3; }
+.footer-msg { text-align: center; font-size: 0.6rem; margin-top: 10px; font-weight: bold; }
 
-/* Buttons */
-.button-group {
+/* Mini Prescription in Book */
+.prescription-card {
+  border: 2px solid #000;
+  padding: 10px;
+  height: 100%;
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  width: 100%;
-  max-width: 350px;
-  margin-top: 20px;
 }
+.rx-header { display: flex; justify-content: space-between; border-bottom: 2px solid #000; padding-bottom: 5px; margin-bottom: 10px; }
+.rx-symbol { font-size: 1.5rem; font-weight: bold; }
+.clinic-name { font-weight: 900; font-size: 0.8rem; }
+.diagnosis-box { background: #eee; padding: 5px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; }
+.grade { font-size: 1.5rem; font-weight: 900; color: var(--accent-color); }
+.action-plan ul { padding-left: 15px; margin-top: 5px; }
+.action-plan li { margin-bottom: 3px; }
+.rx-footer { margin-top: auto; border-top: 1px dashed #000; padding-top: 5px; text-align: right; }
 
-.action-btn {
-  padding: 12px;
-  background: var(--highlight-color);
-  color: #000;
-  font-weight: 900;
-  border: none;
+/* Save Button inside Book */
+.save-icon-btn {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  background: transparent;
+  border: 2px solid #000;
+  padding: 5px 10px;
+  font-weight: bold;
   cursor: pointer;
-  text-transform: uppercase;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  transition: all 0.2s;
 }
-.action-btn:hover { background: #00eebb; }
+.save-icon-btn:hover {
+  background: #000;
+  color: #fff;
+}
 
+/* Nav Controls (Home Button) */
+.nav-controls {
+  text-align: center;
+  margin-top: 10px;
+}
 .secondary-btn {
-  padding: 12px;
+  padding: 8px 20px;
   background: transparent;
   color: var(--text-color);
   border: 1px solid var(--text-color);
   font-family: var(--font-mono);
-  font-size: 0.9rem;
+  font-size: 0.8rem;
   cursor: pointer;
-  transition: all 0.2s;
 }
-
 .secondary-btn:hover { background: var(--text-color); color: var(--bg-color); }
 
-body.mode-good .secondary-btn { border-color: #333; color: #333; }
-body.mode-good .secondary-btn:hover { background: #333; color: #fff; }
-
-/* Whitepaper Link & Modal */
-.whitepaper-link-wrapper { margin-top: 20px; text-align: center; }
-#whitepaper-link { color: #888; font-size: 0.8rem; text-decoration: none; border-bottom: 1px dotted #888; }
-#whitepaper-link:hover { color: var(--highlight-color); border-bottom-color: var(--highlight-color); }
-
-.modal {
-  position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-  background: rgba(0,0,0,0.8); z-index: 2000;
-  display: flex; justify-content: center; align-items: center;
-}
-.modal.hidden { display: none; }
-.modal-content {
-  background: #fff; color: #000; padding: 40px; max-width: 600px; width: 90%;
-  max-height: 80vh; overflow-y: auto; position: relative;
-  font-family: var(--font-main);
-}
-.close-modal {
-  position: absolute; top: 10px; right: 20px; font-size: 2rem; cursor: pointer;
-}
-.whitepaper-body h2 { margin-bottom: 20px; border-bottom: 2px solid #000; padding-bottom: 10px; }
-.whitepaper-body h3 { margin-top: 20px; margin-bottom: 10px; color: var(--accent-color); }
-.whitepaper-body p { margin-bottom: 10px; line-height: 1.6; font-size: 0.9rem; }
-.whitepaper-body ul { margin-left: 20px; margin-bottom: 10px; }
 
 /* ------------------- VISUAL EFFECTS ------------------- */
-/* ... (Existing Bad/Good mode styles remain the same, ensuring container animation works) ... */
-
 body.mode-bad { animation: siren-flash 0.5s infinite; }
-body.mode-bad .container { animation: glitch-anim-container 0.3s infinite; }
 @keyframes siren-flash { 0%, 100% { background-color: #2a0000; } 50% { background-color: #500000; } }
-@keyframes glitch-anim-container {
-  0% { transform: translate(0); } 20% { transform: translate(-1px, 1px); }
-  40% { transform: translate(-1px, -1px); } 60% { transform: translate(1px, 1px); }
-  80% { transform: translate(1px, -1px); } 100% { transform: translate(0); }
-}
 
 .bad-marquee {
   position: fixed; top: 50%; left: 0; width: 100%; background: red; color: white;
@@ -462,7 +427,6 @@ body.mode-good .scan-line { display: none; }
 body.mode-good header .main-copy { color: #d4af37; text-shadow: 0 0 10px rgba(212, 175, 55, 0.5); }
 body.mode-good .input-zone { background: #fff; border-color: #d4af37; box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3); }
 body.mode-good input { background: #fdfdfd; color: #333; border-color: #ddd; }
-body.mode-good .receipt { border: 2px solid #d4af37; }
 
 /* Coin Shower Effect */
 .coin {
@@ -488,6 +452,15 @@ body.mode-good .receipt { border: 2px solid #d4af37; }
 @keyframes fly-away { to { transform: translateY(-100vh) translateX(50px) rotate(360deg); opacity: 0; } }
 
 /* Mobile */
-@media (max-width: 400px) {
-  .main-copy { font-size: 1.4rem; }
+@media (max-width: 550px) {
+  .book-wrapper { height: auto; padding-bottom: 20px; perspective: none; }
+  .book {
+    width: 100%; height: auto; transform: none; display: flex; flex-direction: column; gap: 20px;
+  }
+  .book.open { transform: none; }
+  .book-cover { display: none; } /* Hide cover on mobile for simpler UX */
+  .book-page, .book-page.left, .book-page.right {
+    position: relative; width: 100%; height: auto; left: 0; top: 0; transform: none;
+    border: 1px solid #ccc;
+  }
 }
