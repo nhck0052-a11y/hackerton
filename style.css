@@ -755,10 +755,25 @@ body.mode-good input { background: #fdfdfd; color: #333; border-color: #ddd; }
   color: var(--highlight-color);
 }
 
-/* Contact Modal Specifics */
+/* Contact Modal - Bottom Sheet Style */
+#contact-modal {
+  align-items: flex-end;
+}
+
 .contact-content {
   text-align: center;
   border-top: 5px solid var(--highlight-color);
+  width: 100%;
+  max-width: 500px;
+  border-radius: 20px 20px 0 0; /* Rounded top corners */
+  margin-bottom: 0;
+  transform: translateY(100%);
+  animation: slide-up 0.4s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+}
+
+@keyframes slide-up {
+  from { transform: translateY(100%); }
+  to { transform: translateY(0); }
 }
 
 .contact-content h3 {
