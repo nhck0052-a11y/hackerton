@@ -52,8 +52,17 @@ function generateRoast(item, price, reason) {
   const expensive = price > 50000;
   const cheap = price < 5000;
   const food = ['마라탕', '커피', '치킨', '술', '밥', '파스타', '떡볶이'].some(f => item.includes(f));
+  const tech = ['컴퓨터', '맥북', '모니터', '키보드', '아이패드', '갤럭시'].some(t => item.includes(t));
   
   let roasts = [];
+
+  if (tech) {
+    roasts.push(
+      `오.. 장비병 도졌어? ${item} 사면 실력이 늘 것 같지? 응 아니야. 손가락이 문제야.`,
+      `컴퓨터 살 돈으로 코딩 공부나 더 해. ${item}은 장식용이지?`,
+      `전문가인 척 ${item}에 투자했다고 자위하지 마. 그냥 비싼 장난감 산 거잖아.`
+    );
+  }
 
   if (expensive) {
     roasts.push(
