@@ -757,18 +757,21 @@ body.mode-good input { background: #fdfdfd; color: #333; border-color: #ddd; }
 
 /* Contact Modal - Bottom Sheet Style */
 #contact-modal {
-  align-items: flex-end;
+  align-items: flex-end; /* Push to bottom */
+  justify-content: center; /* Center horizontally */
+  padding-bottom: 0; /* Remove padding at bottom so it touches edge */
 }
 
 .contact-content {
   text-align: center;
   border-top: 5px solid var(--highlight-color);
   width: 100%;
-  max-width: 500px;
+  max-width: 600px; /* Slightly wider */
   border-radius: 20px 20px 0 0; /* Rounded top corners */
-  margin-bottom: 0;
+  margin: 0; /* Reset margins */
   transform: translateY(100%);
   animation: slide-up 0.4s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+  position: relative; /* Ensure it stays in flow */
 }
 
 @keyframes slide-up {
