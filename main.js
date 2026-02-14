@@ -253,7 +253,35 @@ function generateAnalysis(item, price, reason) {
   // Guide Book Content
   let guide_intro = (type === 'GOOD') ? `현재 귀하의 금융 생존 확률은 '매우 높음' 단계입니다.` : `경고: 귀하의 금융 생존 확률은 '위험' 수준입니다.`;
   let guide_ch1 = `<strong>[분석]</strong><br>${analysis}<br><strong>[심리]</strong><br>${psychology}`;
-  let guide_ch2 = `귀하를 위한 3계명:<br>` + actions.map((a,i)=>`<strong>${i+1}. ${a}</strong>`).join('<br>');
+  // Chapter 2: Action Plan (Dynamic Quotes)
+  const strictQuotes = [
+    "변명은 통장을 채워주지 않습니다. 지금 움직이십시오.",
+    "행동 없는 반성은 망상에 불과합니다.",
+    "내일의 나에게 빚지지 마십시오.",
+    "이 작은 실천이 당신의 경제적 자유를 만듭니다.",
+    "지금 하지 않으면, 다음 달에도 똑같은 후회를 할 것입니다.",
+    "불편함을 감수하는 것이 절약의 시작입니다.",
+    "단호한 결단만이 악순환을 끊을 수 있습니다."
+  ];
+  
+  const encouragingQuotes = [
+    "작은 성공이 모여 큰 부를 이룹니다.",
+    "이 흐름을 유지하는 것이 가장 중요합니다.",
+    "당신의 현명한 선택이 미래를 바꿉니다.",
+    "자만하지 말고 꾸준히 정진하십시오.",
+    "오늘의 절약은 내일의 자유입니다.",
+    "긍정적인 습관이 자산이 됩니다."
+  ];
+
+  guide_ch2 = (type === 'GOOD') 
+    ? `귀하에게 필요한 것은 '꾸준함'과 '유지'입니다. 현재의 좋은 흐름을 이어가기 위한 지침입니다.<br><br>`
+    : `귀하에게 필요한 것은 '위로'가 아니라 '규율'입니다. 당장 실행해야 할 생존 수칙입니다.<br><br>`;
+
+  actions.forEach((act, index) => {
+    const quotes = (type === 'GOOD') ? encouragingQuotes : strictQuotes;
+    const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
+    guide_ch2 += `<strong>${index + 1}. ${act}</strong><br>- ${randomQuote}<br><br>`;
+  });
   let guide_ch3 = `최종 등급: ${grade}. 미래를 위해 오늘을 관리하십시오.`;
   let guide_warning = (type === 'BAD') ? `[경고] 잔고가 0원에 수렴할 수 있습니다.` : `[조언] 합리적 흐름을 유지하십시오.`;
 
