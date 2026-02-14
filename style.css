@@ -220,6 +220,13 @@ input:focus {
 }
 
 /* Receipt Styles */
+/* Added back proper perspective container */
+.result-zone {
+  display: flex;
+  justify-content: center;
+  perspective: 1000px;
+}
+
 .result-zone.hidden {
   display: none;
 }
