@@ -723,6 +723,28 @@ body.mode-good input { background: #fdfdfd; color: #333; border-color: #ddd; }
 }
 @keyframes fly-away { to { transform: translateY(-100vh) translateX(50px) rotate(360deg); opacity: 0; } }
 
+/* Footer Buttons & Share */
+.footer-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 10px;
+}
+
+.share-container {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.4s ease-in-out, opacity 0.4s ease-in-out;
+  opacity: 0;
+  margin-bottom: 15px;
+}
+
+.share-container.open {
+  max-height: 100px;
+  opacity: 1;
+}
+
 /* Footer & Contact Inline */
 .main-footer {
   margin-top: 50px;

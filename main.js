@@ -27,6 +27,25 @@ document.addEventListener('DOMContentLoaded', () => {
   // Contact Inline Logic
   const openContactBtn = document.getElementById('open-contact-btn');
   const contactInlineSection = document.getElementById('contact-inline-section');
+  
+  // Share Toggle Logic
+  const toggleShareBtn = document.getElementById('toggle-share-btn');
+  const shareContainer = document.getElementById('share-container');
+
+  if (toggleShareBtn) {
+    toggleShareBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      if (shareContainer.classList.contains('hidden')) {
+        shareContainer.classList.remove('hidden');
+        setTimeout(() => { shareContainer.classList.add('open'); }, 10);
+        toggleShareBtn.textContent = "📣 공유 창 닫기";
+      } else {
+        shareContainer.classList.remove('open');
+        setTimeout(() => { shareContainer.classList.add('hidden'); }, 400);
+        toggleShareBtn.textContent = "📣 친구에게 공유하기";
+      }
+    });
+  }
 
   if (openContactBtn) {
     openContactBtn.addEventListener('click', (e) => {

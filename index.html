@@ -163,7 +163,24 @@
 
       <footer class="main-footer">
         <p>재미는 재미일 뿐, 너무 상처받지 말자!</p>
-        <button id="open-contact-btn" class="footer-link">🤝 비즈니스 및 제휴 문의</button>
+        <div class="footer-buttons">
+          <button id="toggle-share-btn" class="footer-link">📣 친구에게 공유하기</button>
+          <button id="open-contact-btn" class="footer-link">🤝 비즈니스 및 제휴 문의</button>
+        </div>
+
+        <!-- AddToAny Share Container (Hidden by default) -->
+        <div id="share-container" class="share-container hidden">
+          <div class="a2a_kit a2a_kit_size_32 a2a_default_style" style="justify-content: center; display: flex; gap: 10px; flex-wrap: wrap;">
+            <a class="a2a_dd" href="https://www.addtoany.com/share"></a>
+            <a class="a2a_button_facebook"></a>
+            <a class="a2a_button_twitter"></a>
+            <a class="a2a_button_line"></a>
+            <a class="a2a_button_kakao"></a>
+            <a class="a2a_button_sms"></a>
+            <a class="a2a_button_copy_link"></a>
+          </div>
+          <script defer src="https://static.addtoany.com/menu/page.js"></script>
+        </div>
         
         <!-- Inline Contact Form (Hidden by default) -->
         <div id="contact-inline-section" class="contact-inline hidden">
