@@ -91,9 +91,14 @@ document.addEventListener('DOMContentLoaded', () => {
       // 3. EMERGENCY MARQUEE
       const marquee = document.createElement('div');
       marquee.classList.add('bad-marquee');
+      
+      const warnText = "⚠ 경고: 통장 잔고 비상! 지갑 심폐소생술 필요 ⚠ 💸 내 돈 어디갔니? 💸 ";
+      const repeatedText = warnText.repeat(10); // Ensure it's long enough
+      
       marquee.innerHTML = `
-        <div class="bad-marquee-content">
-          ⚠ 경고: 통장 잔고 비상! 지갑 심폐소생술 필요 ⚠ 💸 내 돈 어디갔니? 💸 ⚠ 경고: 통장 잔고 비상! 지갑 심폐소생술 필요 ⚠
+        <div class="bad-marquee-track">
+          <span>${repeatedText}</span>
+          <span>${repeatedText}</span>
         </div>
       `;
       document.body.appendChild(marquee);

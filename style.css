@@ -405,7 +405,7 @@ body.mode-bad .container {
   width: 100%;
   background: red;
   color: white;
-  padding: 10px 0;
+  padding: 15px 0;
   font-weight: 900;
   font-size: 1.5rem;
   transform: translateY(-50%) rotate(-5deg);
@@ -413,16 +413,23 @@ body.mode-bad .container {
   box-shadow: 0 0 20px rgba(255, 0, 0, 0.8);
   white-space: nowrap;
   overflow: hidden;
+  display: flex;
 }
 
-.bad-marquee-content {
-  display: inline-block;
-  animation: scroll-left-fast 5s linear infinite;
+.bad-marquee-track {
+  display: flex;
+  white-space: nowrap;
+  animation: scroll-bad 20s linear infinite; /* Adjusted speed for smoother flow */
+  will-change: transform;
 }
 
-@keyframes scroll-left-fast {
-  from { transform: translateX(0); }
-  to { transform: translateX(-50%); }
+.bad-marquee-track span {
+  padding-right: 20px;
+}
+
+@keyframes scroll-bad {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
 }
 
 
