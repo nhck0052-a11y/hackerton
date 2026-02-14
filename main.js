@@ -107,7 +107,7 @@ document.addEventListener('DOMContentLoaded', () => {
           typeWriter(result.short_roast, rRoast); 
         }
 
-        if (reportDate) reportDate.textContent = `[제${new Date().getFullYear()}-${String(new Date().getMonth()+1).padStart(2,'0')}-${String(new Date().getDate()).padStart(2,'0')}호]`;
+        if (reportDate) reportDate.textContent = `[제${new Date().getFullYear()}-${String(new Date().getMonth()+1).padStart(2,'0')}-${String(new Date().getDate()).padStart(2,'0')}호]`
         if (reportAnalysis) reportAnalysis.textContent = result.analysis;
         if (reportPsychology) reportPsychology.textContent = result.psychology;
         if (reportActions) reportActions.innerHTML = result.actions.map(action => `<li>${action}</li>`).join('');
@@ -355,8 +355,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const stamp = document.createElement('div');
         stamp.classList.add('stamp', 'bad');
         stamp.innerText = '탕진\nWARNING';
-        const lp = document.querySelector('.book-page.left .page-content');
-        if(lp) lp.appendChild(stamp);
+        const leftPage = document.querySelector('.book-page.left .page-content');
+        if(leftPage) leftPage.appendChild(stamp);
       }, 1000);
       const marquee = document.createElement('div');
       marquee.classList.add('bad-marquee');
@@ -370,8 +370,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const stamp = document.createElement('div');
         stamp.classList.add('stamp', 'good');
         stamp.innerText = 'Certified:\nSmart Spender';
-        const lp = document.querySelector('.book-page.left .page-content');
-        if(lp) lp.appendChild(stamp);
+        const leftPage = document.querySelector('.book-page.left .page-content');
+        if(leftPage) leftPage.appendChild(stamp);
       }, 1000);
       createCoinRain();
     }
@@ -408,14 +408,20 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 function generateAnalysis(item, price, reason) {
+  // 0. 시세 데이터
   const marketPrices = {
     // 📱 Apple
     '아이폰 16 프로 맥스': 1900000, '아이폰 16 프로': 1550000, '아이폰 16': 1250000,
     '아이폰 15 프로': 1550000, '아이폰 15': 1250000,
     '아이패드 프로 M4': 1700000, '아이패드 에어': 999000,
     '맥북 프로 16': 3690000, '맥북 에어 M1': 725000,
+    '에어팟 맥스': 769000, '에어팟 프로': 359000,
     // 📱 Samsung
     '갤럭시 S24 울트라': 1698400, '갤럭시 S24': 1155000, 'Z 폴드 6': 2229700, 'Z 플립 6': 1485000,
+    // 📸 Camera (Including Y2K Vintage Trend)
+    '캐논 익서스 750': 400000, 'Canon Ixus 750': 400000, '익서스 750': 400000,
+    '익서스': 350000, 'Ixus': 350000, '쿨픽스': 300000, 'Coolpix': 300000,
+    '소니 a7m4': 2800000, 'DJI 매빅 3': 2000000,
     // 🪑 Furniture
     'IKEA 빌리': 99000, 'IKEA Billy': 99000, 'IKEA 칼락스': 69000, '허먼밀러 에어론': 2200000,
     // ☕ Food
@@ -425,7 +431,7 @@ function generateAnalysis(item, price, reason) {
   };
 
   const food = ['마라탕', '커피', '치킨', '술', '밥'].some(f => item.includes(f));
-  const tech = ['컴퓨터', '맥북', '폰', '아이폰', '갤럭시', '에어팟', '플스', '닌텐도'].some(t => item.includes(t));
+  const tech = ['컴퓨터', '맥북', '폰', '아이폰', '갤럭시', '에어팟', '플스', '닌텐도', '카메라', '드론', '익서스', 'Ixus', '디카'].some(t => item.includes(t));
   const goodItems = ['책', '강의', '기부', '저축', '운동', '영양제'].some(g => item.includes(g));
 
   let marketMatch = null;
@@ -453,10 +459,10 @@ function generateAnalysis(item, price, reason) {
     psychology = "소비의 타당성을 스스로 합리화하고 있습니다. 정말 필요해서 산 것인지 냉정하게 자문해보십시오.";
   }
 
-  if (marketMatch && price <= marketPrices[marketMatch] * 0.7) {
+  if (marketMatch && price <= marketPrices[marketMatch] * 0.75) {
     type = 'GOOD'; grade = 'S';
-    short_roast = `대박! ${marketMatch} 시세 파괴 수준입니다.`;
-    analysis += ` 시세(${marketPrices[marketMatch].toLocaleString()}원) 대비 압도적으로 저렴하게 구매하셨습니다.`;
+    short_roast = `초특급 득템! ${marketMatch}를 이 가격에?`;
+    analysis += ` 시세(${marketPrices[marketMatch].toLocaleString()}원) 대비 압도적으로 저렴하게 구매하셨습니다. 최근 Y2K 열풍으로 급등한 시세를 고려할 때 승리한 소비입니다.`;
     actions = ["아낀 돈 즉시 저축", "구매 팁 전수", "자만 금지"];
   } else if (marketMatch && price <= marketPrices[marketMatch] * 1.3) {
     type = 'GOOD'; grade = 'B+';
@@ -505,6 +511,7 @@ function generateAnalysis(item, price, reason) {
 
 function typeWriter(text, element) {
   let i = 0; element.textContent = '';
+  const speed = 30;
   function type() { if (i < text.length) { element.textContent += text.charAt(i); i++; setTimeout(type, 30); } }
   type();
 }
