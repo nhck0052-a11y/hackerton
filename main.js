@@ -457,61 +457,59 @@ function generateAnalysis(item, price, reason) {
     }
   }
 
-  // --- GUIDE BOOK CONTENT GENERATION ---
+  // --- GUIDE BOOK CONTENT GENERATION (Advanced AI Logic) ---
   let guide_intro = "";
   let guide_ch1 = "";
   let guide_ch2 = "";
   let guide_ch3 = "";
   let guide_warning = "";
 
-  // Introduction Logic
+  // 1. Introduction: Financial Vital Signs
   if (type === 'GOOD') {
-    guide_intro = `현재 귀하의 금융 생존 확률은 '매우 높음(High Survival)' 단계입니다. 입력하신 소비 데이터(${item})는 자산 침식이 아닌 '자산 방어' 또는 '가치 투자'로 판명되었습니다. 귀하는 통제된 환경 속에서 합리적인 판단을 내리고 있습니다.`;
+    if (grade === 'S') {
+      guide_intro = `[STATUS: LEGENDARY]\n귀하의 금융 생존 신호는 '초월적(Transcendent)'입니다. 단순한 소비를 넘어 시장의 비효율성을 공략하여 가치를 창출하는 '알파(Alpha) 투자자'의 자질을 보이고 있습니다.`;
+    } else {
+      guide_intro = `[STATUS: STABLE]\n귀하의 금융 생존 신호는 '안정적(Stable)'입니다. 자산 유동성을 해치지 않는 범위 내에서 합리적인 의사결정이 이루어졌으며, 이는 장기적인 재무 건전성에 긍정적인 신호입니다.`;
+    }
   } else {
-    guide_intro = `경고: 현재 귀하의 금융 생존 확률은 '위험(Critical)' 수준으로 급락했습니다. 입력하신 지출(${item})은 귀하의 자산 방어벽을 무너뜨리는 '트로이의 목마'와 같습니다. 지금 즉시 지혈하지 않으면, 파산은 시간문제입니다.`;
+    guide_intro = `[STATUS: CRITICAL]\n경고: 귀하의 금융 생존 신호에 '적색경보'가 켜졌습니다. 입력하신 지출(${item})은 귀하의 자산 포트폴리오에 심각한 균열을 일으키는 '악성 부채'의 성격을 띠고 있습니다. 즉각적인 재무 심폐소생술이 필요합니다.`;
   }
 
-  // Chapter 1: Deep Analysis
-  guide_ch1 = `<strong>[기회비용의 실체]</strong><br>귀하가 지불한 ${price.toLocaleString()}원은 단순한 화폐가 아닙니다. 이는 약 ${workHours}시간의 노동을 통해 얻은 '생명력'이며, 국밥 ${gukbapCount}그릇에 해당하는 '생존 에너지'입니다.<br><br><strong>[심층 심리 부검]</strong><br>${psychology} 귀하의 무의식은 현재 '결핍'을 느끼고 있으며, 이를 물질로 채우려 하고 있습니다. 그러나 이는 '밑 빠진 독에 물 붓기'일 뿐입니다.`;
+  // 2. Chapter 1: Deep Analysis (Economics & Psychology)
+  // Calculate Future Value (FV) - 10 years, 5% interest
+  const futureValue = Math.floor(price * Math.pow(1.05, 10));
+  const lossText = type === 'BAD' 
+    ? `만약 이 돈을 연 5% 복리로 투자했다면, 10년 후 약 <span style="color:#ff0055; font-weight:bold;">${futureValue.toLocaleString()}원</span>이 되었을 것입니다. 귀하는 단순히 ${price.toLocaleString()}원을 쓴 것이 아니라, 미래의 가능성을 태워버린 것입니다.`
+    : `이 소비는 단순한 지출이 아니라, 귀하의 삶의 질을 높이거나 자산을 방어하는 유효한 '투입(Input)'입니다. 기회비용 대비 효용 가치가 더 큽니다.`;
 
-  // Chapter 2: Action Plan (Dynamic Quotes)
-  const strictQuotes = [
-    "변명은 통장을 채워주지 않습니다. 지금 움직이십시오.",
-    "행동 없는 반성은 망상에 불과합니다.",
-    "내일의 나에게 빚지지 마십시오.",
-    "이 작은 실천이 당신의 경제적 자유를 만듭니다.",
-    "지금 하지 않으면, 다음 달에도 똑같은 후회를 할 것입니다.",
-    "불편함을 감수하는 것이 절약의 시작입니다.",
-    "단호한 결단만이 악순환을 끊을 수 있습니다."
-  ];
+  guide_ch1 = `
+    <strong>[정밀 경제 분석: 기회비용]</strong><br>
+    ${lossText}<br>
+    또한, 이는 최저시급 기준 약 <strong>${workHours}시간</strong>의 노동력과 맞바꾼 등가교환입니다.<br><br>
+    <strong>[심층 심리 프로파일링]</strong><br>
+    ${psychology} 뇌과학적으로 볼 때, 결제 순간의 도파민 분비는 3분 내로 사라집니다. 귀하에게 남는 것은 '물건'이 아니라 '통장의 공허함' 뿐임을 직시하십시오.
+  `;
+
+  // 3. Chapter 2: Action Plan (Structured)
+  const actionCategory = type === 'GOOD' ? ['[강화 행동]', '[확장 전략]', '[마인드셋]'] : ['[긴급 처방]', '[환경 통제]', '[행동 교정]'];
   
-  const encouragingQuotes = [
-    "작은 성공이 모여 큰 부를 이룹니다.",
-    "이 흐름을 유지하는 것이 가장 중요합니다.",
-    "당신의 현명한 선택이 미래를 바꿉니다.",
-    "자만하지 말고 꾸준히 정진하십시오.",
-    "오늘의 절약은 내일의 자유입니다.",
-    "긍정적인 습관이 자산이 됩니다."
-  ];
-
-  guide_ch2 = (type === 'GOOD') 
-    ? `귀하에게 필요한 것은 '꾸준함'과 '유지'입니다. 현재의 좋은 흐름을 이어가기 위한 지침입니다.<br><br>`
-    : `귀하에게 필요한 것은 '위로'가 아니라 '규율'입니다. 당장 실행해야 할 생존 수칙입니다.<br><br>`;
-
+  guide_ch2 = `귀하의 생존 등급 [${grade}]에 따른 단계별 솔루션입니다.<br><br>`;
   actions.forEach((act, index) => {
-    const quotes = (type === 'GOOD') ? encouragingQuotes : strictQuotes;
-    const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
-    guide_ch2 += `<strong>${index + 1}. ${act}</strong><br>- ${randomQuote}<br><br>`;
+    // Add specific detailed quotes based on type
+    const detailQuote = (type === 'GOOD') 
+      ? ["작은 스노우볼이 거대한 자산이 됩니다.", "성공의 경험을 기록하여 뇌에 각인시키십시오.", "주변의 부러움이 아닌, 내일의 자유를 즐기십시오."][index % 3]
+      : ["출혈을 막는 것이 자산 증식보다 우선입니다.", "소비 트리거(Trigger)를 물리적으로 차단하십시오.", "불편함만이 당신을 구원할 수 있습니다."][index % 3];
+
+    guide_ch2 += `<strong>${actionCategory[index % 3]} ${act}</strong><br>- ${detailQuote}<br><br>`;
   });
 
-  // Chapter 3: Verdict
-  guide_ch3 = `종합 판정 결과, 귀하의 이번 소비 등급은 [ ${grade} ] 입니다. 이는 단순한 점수가 아니라, 귀하의 경제적 자립 가능성을 나타내는 지표입니다.`;
-
-  // Warning
-  if (type === 'BAD') {
-    guide_warning = `[경고] 이 지침을 무시할 경우, 3개월 내에 카드 리볼빙의 늪에 빠질 확률이 98% 이상입니다.`;
+  // 4. Chapter 3: Verdict & Projection
+  if (type === 'GOOD') {
+    guide_ch3 = `[3개월 후 예측] 현재의 규율을 유지한다면, 귀하의 자산은 우상향 곡선을 그릴 것입니다. '경제적 자유'라는 목적지에 한 걸음 더 다가섰습니다.`;
+    guide_warning = `[조언] 방심은 금물입니다. 시스템을 믿고 계속 나아가십시오.`;
   } else {
-    guide_warning = `[조언] 자만은 금물입니다. 이 흐름을 잃지 말고 꾸준히 정진하십시오.`;
+    guide_ch3 = `[3개월 후 예측] 이 패턴이 지속될 경우, 귀하는 '만성적 현금 흐름 부족'에 시달리게 됩니다. 신용카드 리볼빙이나 대출의 유혹이 귀하를 기다리고 있습니다.`;
+    guide_warning = `[경고] 지금 멈추지 않으면, 다음 번 분석 결과는 '파산'일 것입니다.`;
   }
 
   return { type, grade, short_roast, analysis, psychology, actions, guide_intro, guide_ch1, guide_ch2, guide_ch3, guide_warning };
