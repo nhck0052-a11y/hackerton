@@ -723,7 +723,7 @@ body.mode-good input { background: #fdfdfd; color: #333; border-color: #ddd; }
 }
 @keyframes fly-away { to { transform: translateY(-100vh) translateX(50px) rotate(360deg); opacity: 0; } }
 
-/* Footer & Contact Modal */
+/* Footer & Contact Inline */
 .main-footer {
   margin-top: 50px;
   text-align: center;
@@ -748,6 +748,7 @@ body.mode-good input { background: #fdfdfd; color: #333; border-color: #ddd; }
   cursor: pointer;
   border-radius: 4px;
   transition: all 0.2s;
+  margin-bottom: 15px;
 }
 
 .footer-link:hover {
@@ -755,53 +756,48 @@ body.mode-good input { background: #fdfdfd; color: #333; border-color: #ddd; }
   color: var(--highlight-color);
 }
 
-/* Contact Modal - Bottom Sheet Style */
-#contact-modal {
-  align-items: flex-end; /* Push to bottom */
-  justify-content: center; /* Center horizontally */
-  padding-bottom: 0; /* Remove padding at bottom so it touches edge */
-}
-
-.contact-content {
-  text-align: center;
-  border-top: 5px solid var(--highlight-color);
+/* Inline Contact Form Styles */
+.contact-inline {
   width: 100%;
-  max-width: 600px; /* Slightly wider */
-  border-radius: 20px 20px 0 0; /* Rounded top corners */
-  margin: 0; /* Reset margins */
-  transform: translateY(100%);
-  animation: slide-up 0.4s cubic-bezier(0.25, 1, 0.5, 1) forwards;
-  position: relative; /* Ensure it stays in flow */
+  max-width: 500px;
+  margin: 0 auto;
+  overflow: hidden;
+  max-height: 0; /* For slide effect */
+  transition: max-height 0.5s ease-in-out, opacity 0.5s ease-in-out;
+  opacity: 0;
 }
 
-@keyframes slide-up {
-  from { transform: translateY(100%); }
-  to { transform: translateY(0); }
+.contact-inline.open {
+  max-height: 500px; /* Approximate height to fit form */
+  opacity: 1;
 }
 
-.contact-content h3 {
-  font-size: 1.5rem;
+.contact-content-inline {
+  background: #111;
+  border: 1px solid #333;
+  border-radius: 8px;
+  padding: 20px;
+  margin-top: 10px;
+  text-align: center;
+}
+
+.contact-content-inline h3 {
+  font-size: 1.2rem;
   margin-bottom: 10px;
   color: var(--highlight-color);
 }
 
-.contact-content p {
-  margin-bottom: 20px;
-  color: #555;
-}
-
-.contact-form {
-  text-align: left;
+.contact-content-inline p {
+  font-size: 0.8rem;
+  margin-bottom: 15px;
 }
 
 .contact-form textarea {
-  min-height: 120px;
+  min-height: 80px;
 }
 
-/* Ensure modal hidden state is enforced */
-.modal.hidden {
-  display: none !important;
-}
+/* Ensure hidden utility works if needed */
+.hidden { display: none !important; }
 
 /* Mobile */
 @media (max-width: 550px) {

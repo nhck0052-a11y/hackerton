@@ -24,149 +24,28 @@ document.addEventListener('DOMContentLoaded', () => {
   const guideBook = document.getElementById('guide-book');
   const closeGuideBtn = document.getElementById('close-guide-btn');
 
-  // Contact Modal Elements
+  // Contact Inline Logic
   const openContactBtn = document.getElementById('open-contact-btn');
-  const contactModal = document.getElementById('contact-modal');
-  const closeContactBtn = document.getElementById('close-contact-btn');
+  const contactInlineSection = document.getElementById('contact-inline-section');
 
-  // Nav/Download
-  const homeBtn = document.getElementById('home-btn');
-  const downloadLink = document.getElementById('download-link');
-  const effectsLayer = document.getElementById('effects-layer');
-  const body = document.body;
-
-  // Contact Modal Logic
   if (openContactBtn) {
     openContactBtn.addEventListener('click', (e) => {
       e.preventDefault();
-      contactModal.classList.remove('hidden');
-    });
-  }
-
-  if (closeContactBtn) {
-    closeContactBtn.addEventListener('click', () => {
-      contactModal.classList.add('hidden');
-    });
-  }
-
-  window.addEventListener('click', (e) => {
-    if (e.target === contactModal) {
-      contactModal.classList.add('hidden');
-    }
-    // Also handle whitepaper modal outside click here if needed or separate
-    if (e.target === guideOverlay) { // Assuming guideOverlay logic exists
-       // guide close logic is handled by guide close button mostly, but good to have
-    }
-  });
-
-  if (form) {
-    form.addEventListener('submit', (e) => {
-      e.preventDefault();
-      resetEffects();
-
-      const itemInput = document.getElementById('item');
-      const priceInput = document.getElementById('price');
-      const reasonInput = document.getElementById('reason');
-
-      const item = itemInput.value;
-      const price = parseInt(priceInput.value);
-      const reason = reasonInput.value;
-
-      if (!item || isNaN(price) || !reason) return;
-
-      // Populate Receipt
-      rItem.textContent = item.length > 15 ? item.substring(0, 15) + '...' : item;
-      rPrice.textContent = '₩' + price.toLocaleString();
-      rReason.textContent = reason;
-      rTotal.textContent = '₩' + price.toLocaleString();
-      rTimestamp.textContent = new Date().toLocaleDateString('ko-KR');
-
-      // Generate Analysis
-      const result = generateAnalysis(item, price, reason);
-      
-      // Fill Receipt Roast
-      rRoast.textContent = ""; 
-      typeWriter(result.short_roast, rRoast); 
-
-      // Fill Financial Report
-      reportDate.textContent = `[제${new Date().getFullYear()}-${String(new Date().getMonth()+1).padStart(2,'0')}-${String(new Date().getDate()).padStart(2,'0')}호]`
-      reportAnalysis.textContent = result.analysis;
-      reportPsychology.textContent = result.psychology;
-      reportActions.innerHTML = result.actions.map(action => `<li>${action}</li>`).join('');
-      reportGrade.textContent = result.grade;
-
-      // Grade Color
-      if (result.type === 'GOOD') {
-          reportGrade.style.color = '#00cc66';
-          reportGrade.style.borderColor = '#00cc66';
+      // Toggle visibility
+      if (contactInlineSection.classList.contains('hidden')) {
+        contactInlineSection.classList.remove('hidden');
+        // Slight delay to allow display:block to apply before opacity transition
+        setTimeout(() => {
+          contactInlineSection.classList.add('open');
+        }, 10);
+        openContactBtn.textContent = "🤝 닫기";
       } else {
-          reportGrade.style.color = '#ff0055';
-          reportGrade.style.borderColor = '#ff0055';
+        contactInlineSection.classList.remove('open');
+        setTimeout(() => {
+          contactInlineSection.classList.add('hidden');
+        }, 500); // Wait for transition
+        openContactBtn.textContent = "🤝 비즈니스 및 제휴 문의";
       }
-
-      // Fill Guide Book
-      document.getElementById('guide-intro').textContent = result.guide_intro;
-      document.getElementById('guide-ch1').innerHTML = result.guide_ch1;
-      document.getElementById('guide-ch2').innerHTML = result.guide_ch2;
-      document.getElementById('guide-ch3').textContent = result.guide_ch3;
-      document.getElementById('guide-warning').textContent = result.guide_warning;
-      
-      // Show Result
-      resultZone.classList.remove('hidden');
-      triggerEffects(result.type);
-      resultZone.scrollIntoView({ behavior: 'smooth', block: 'start' });
-
-      setTimeout(() => {
-        book.classList.add('open');
-      }, 500);
-    });
-  }
-
-  if (homeBtn) {
-    homeBtn.addEventListener('click', () => {
-      book.classList.remove('open');
-      setTimeout(() => {
-          resultZone.classList.add('hidden');
-          form.reset();
-          resetEffects();
-          window.scrollTo({ top: 0, behavior: 'smooth' });
-      }, 500);
-    });
-  }
-
-  if (downloadLink) {
-    downloadLink.addEventListener('click', (e) => {
-      e.preventDefault();
-      // Ensure the book is fully visible/rendered for capture
-      html2canvas(book, { 
-        backgroundColor: null, 
-        scale: 2,
-        useCORS: true 
-      }).then(canvas => {
-        const link = document.createElement('a');
-        link.download = 'gemini_report.png';
-        link.href = canvas.toDataURL();
-        link.click();
-      });
-    });
-  }
-
-  if (guideLink) {
-    guideLink.addEventListener('click', (e) => {
-      e.preventDefault();
-      guideOverlay.classList.remove('hidden');
-      setTimeout(() => {
-        guideBook.classList.add('open');
-      }, 100);
-    });
-  }
-
-  if (closeGuideBtn) {
-    closeGuideBtn.addEventListener('click', () => {
-      guideBook.classList.remove('open');
-      setTimeout(() => {
-        guideOverlay.classList.add('hidden');
-      }, 800);
     });
   }
 
