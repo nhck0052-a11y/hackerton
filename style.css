@@ -531,12 +531,13 @@ body.mode-good .secondary-btn:hover {
   width: 40px; /* Small coin size */
   height: 40px;
   background-image: url('/coin.png');
-  background-size: cover;
+  background-size: 110%; /* Slightly zoom to hide edges */
   background-position: center;
-  border-radius: 50%; /* Make it round to cut the image */
-  box-shadow: 0 4px 6px rgba(0,0,0,0.3); /* Subtle shadow */
+  border-radius: 50%; /* Make it round */
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1); /* Lighter shadow for multiply mode */
   animation: fall-spin linear forwards;
   z-index: 910;
+  mix-blend-mode: multiply; /* Remove white background */
 }
 
 @keyframes fall-spin {
