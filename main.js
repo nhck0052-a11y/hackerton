@@ -124,20 +124,17 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function createCoinRain() {
-    for (let i = 0; i < 25; i++) { // Less count, more impact
+    for (let i = 0; i < 100; i++) { // significantly more coins
       const coin = document.createElement('div');
       coin.classList.add('coin');
       
       // Randomize horizontal start
-      coin.style.left = (Math.random() * 90 + 5) + 'vw';
+      coin.style.left = (Math.random() * 95 + 2.5) + 'vw';
       
-      // Use the new bounce animation
-      // Faster: 1.5s to 2.5s duration
-      const duration = Math.random() * 1 + 1.5; 
+      // Randomize speed and delay for "rain" feel
+      const duration = Math.random() * 1.5 + 1.2; 
       coin.style.animation = `coin-bounce ${duration}s linear forwards`;
-      
-      // Minimal delay so they burst out together but slightly scattered
-      coin.style.animationDelay = Math.random() * 0.5 + 's';
+      coin.style.animationDelay = Math.random() * 1.5 + 's'; // Spread out the burst
       
       effectsLayer.appendChild(coin);
     }

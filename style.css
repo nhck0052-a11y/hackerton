@@ -525,21 +525,20 @@ body.mode-good .secondary-btn:hover {
   to { transform: translateY(-100vh) translateX(50px) rotate(360deg); opacity: 0; }
 }
 
-/* Coin Bounce & Glitch Effect */
+/* Coin Bounce Effect */
 .coin {
   position: absolute;
-  width: 50px;
-  height: 50px;
+  width: 25px; /* Smaller coins */
+  height: 25px;
   background-image: url('/coin.png');
   background-size: 280%;
   background-position: center;
   border-radius: 50%;
-  border: 2px solid #d4af37;
-  box-shadow: 0 4px 15px rgba(212, 175, 55, 0.6);
-  opacity: 0; /* Start invisible */
+  border: 1px solid #d4af37; /* Thinner border for smaller size */
+  box-shadow: 0 2px 8px rgba(212, 175, 55, 0.4);
+  opacity: 0;
   z-index: 910;
-  will-change: transform, filter;
-  /* Animation defined in JS for variable speeds */
+  will-change: transform;
 }
 
 @keyframes coin-bounce {
@@ -554,10 +553,6 @@ body.mode-good .secondary-btn:hover {
   30% {
     transform: translateY(85vh) rotate(180deg) scale(1.1); /* Hit 1 (Floor) */
     animation-timing-function: ease-out;
-    filter: hue-rotate(90deg) brightness(200%) drop-shadow(5px 0px red); /* Glitch */
-  }
-  35% {
-    filter: none; /* Reset glitch */
   }
   55% {
     transform: translateY(40vh) rotate(270deg) scale(1); /* Bounce Peak 1 */
@@ -566,10 +561,6 @@ body.mode-good .secondary-btn:hover {
   75% {
     transform: translateY(90vh) rotate(360deg) scale(1.05); /* Hit 2 */
     animation-timing-function: ease-out;
-    filter: hue-rotate(-90deg) brightness(150%) drop-shadow(-5px 0px blue); /* Glitch */
-  }
-  78% {
-    filter: none;
   }
   85% {
     transform: translateY(70vh) rotate(400deg) scale(1); /* Bounce Peak 2 */
@@ -577,11 +568,9 @@ body.mode-good .secondary-btn:hover {
   }
   95% {
     transform: translateY(95vh) rotate(420deg) scale(1); /* Hit 3 */
-    filter: invert(1); /* Mini Glitch */
   }
   100% {
     transform: translateY(110vh) rotate(450deg); /* Fall off */
-    filter: none;
   }
 }
 
