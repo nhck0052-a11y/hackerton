@@ -22,7 +22,6 @@
       <span class="divider">///</span>
       <span>금융 전문가보다 매서운 AI의 일침. 지금 당신의 지갑 서열을 확인하고 공유하세요.</span>
       <span class="divider">///</span>
-      <!-- Duplicate for seamless loop -->
       <span>어제 먹은 마라탕, 정말 스트레스 때문이었나요? 아니면 그냥 생각이 없으셨나요?</span>
       <span class="divider">///</span>
       <span>당신의 결제 내역을 Gemini가 해부합니다. 팩폭 영수증 발급까지 딱 10초.</span>
@@ -45,17 +44,14 @@
             <label for="item">무엇을 샀나요?</label>
             <input type="text" id="item" placeholder="예: 컴퓨터" required autocomplete="off">
           </div>
-          
           <div class="input-group">
             <label for="price">얼마를 썼나요?</label>
             <input type="number" id="price" placeholder="숫자만 입력하세요 (예: 25000)" required>
           </div>
-          
           <div class="input-group">
             <label for="reason">그때 기분은?</label>
             <input type="text" id="reason" placeholder="예: 스트레스 풀려고" required autocomplete="off">
           </div>
-
           <button type="submit" class="submit-btn">
             <span class="btn-text">분석 시작 (ENTER)</span>
             <div class="btn-glitch"></div>
@@ -103,94 +99,87 @@
                         <p class="ai-label">[ ANALYZING ]</p>
                         <p id="ai-roast-text" class="roast-text">...</p>
                       </div>
-                                            <div class="barcode">|| ||| || |||</div>
-                                            <p class="footer-msg">NO REFUNDS</p>
-                                            <div class="guide-link-container">
-                                              <a href="#" id="guide-link">📗 [수행 지침] 지능형 금융 생존 백서 생성 가이드</a>
-                                            </div>
-                                          </div>
-                                          <div class="receipt-jagged-bottom"></div>
-                                        </div>
-                                      </div>
-                                    </div>
-                                  </div>
-                      
-                                  <!-- Right Page: Prescription -->
-                                  <div class="book-page right">
-                                    <div class="page-content">
-                                      <div class="prescription-card" id="prescription">
-                                        <div class="rx-header">
-                                          <span class="rx-symbol">℞</span>
-                                          <span class="clinic-name">GEMINI CLINIC</span>
-                                        </div>
-                                        <div class="rx-body">
-                                          <div class="diagnosis-box">
-                                            <span class="label">GRADE</span>
-                                            <span class="grade" id="rx-grade">F</span>
-                                          </div>
-                                          <div class="action-plan">
-                                            <p class="label">SOLUTION:</p>
-                                            <ul id="rx-actions">
-                                              <li>...</li>
-                                            </ul>
-                                          </div>
-                                          <div class="rx-footer">
-                                            <small>유효기간: 월급날까지</small>
-                                          </div>
-                                        </div>
-                                      </div>
-                                      
-                                      <button id="download-btn" class="save-icon-btn" title="사진으로 저장">
-                                        📸 저장
-                                      </button>
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-                      
-                              <div class="nav-controls">
-                                <button id="home-btn" class="secondary-btn">다시 하기 (HOME)</button>
-                              </div>
-                            </section>
-                          </main>
-                        </div>
-                      
-                        <!-- Guide Book Overlay -->
-                        <div id="guide-overlay" class="guide-overlay hidden">
-                          <div class="guide-book-wrapper">
-                            <div class="guide-book" id="guide-book">
-                              <!-- Cover -->
-                              <div class="guide-page guide-cover">
-                                <div class="guide-cover-content">
-                                  <h2>SURVIVAL<br>GUIDE</h2>
-                                  <p>지능형 금융 생존 백서</p>
-                                  <span class="icon">📗</span>
-                                </div>
-                              </div>
-                              <!-- Left Page -->
-                              <div class="guide-page guide-left">
-                                <div class="guide-content">
-                                  <h3>[수행 지침]</h3>
-                                  <p>데이터 로딩 중...</p>
-                                  <div class="loading-line"></div>
-                                  <div class="loading-line" style="width: 80%"></div>
-                                  <div class="loading-line" style="width: 60%"></div>
-                                </div>
-                              </div>
-                              <!-- Right Page -->
-                              <div class="guide-page guide-right">
-                                <div class="guide-content">
-                                  <h3>[행동 강령]</h3>
-                                  <p>데이터 로딩 중...</p>
-                                  <div class="loading-line"></div>
-                                  <div class="loading-line" style="width: 90%"></div>
-                                  <div class="loading-line" style="width: 50%"></div>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                          <button id="close-guide-btn" class="close-guide-btn">닫기 (CLOSE)</button>
-                        </div>
-                        <script type="module" src="/main.js"></script>
-                      </body>
-                      </html>
+                      <div class="barcode">|| ||| || |||</div>
+                      <p class="footer-msg">NO REFUNDS</p>
+                      <div class="guide-link-container">
+                        <a href="#" id="guide-link">📗 [수행 지침] 지능형 금융 생존 백서 생성 가이드</a>
+                      </div>
+                    </div>
+                    <div class="receipt-jagged-bottom"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Right Page: Prescription -->
+            <div class="book-page right">
+              <div class="page-content">
+                <div class="prescription-card" id="prescription">
+                  <div class="rx-header">
+                    <span class="rx-symbol">℞</span>
+                    <span class="clinic-name">GEMINI CLINIC</span>
+                  </div>
+                  <div class="rx-body">
+                    <div class="diagnosis-box">
+                      <span class="label">GRADE</span>
+                      <span class="grade" id="rx-grade">F</span>
+                    </div>
+                    <div class="action-plan">
+                      <p class="label">SOLUTION:</p>
+                      <ul id="rx-actions">
+                        <li>...</li>
+                      </ul>
+                    </div>
+                    <div class="rx-footer">
+                      <small>유효기간: 월급날까지</small>
+                    </div>
+                  </div>
+                </div>
+                <button id="download-btn" class="save-icon-btn" title="사진으로 저장">📸 저장</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="nav-controls">
+          <button id="home-btn" class="secondary-btn">다시 하기 (HOME)</button>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- Guide Book Overlay -->
+  <div id="guide-overlay" class="guide-overlay hidden">
+    <div class="guide-book-wrapper">
+      <div class="guide-book" id="guide-book">
+        <div class="guide-page guide-cover">
+          <div class="guide-cover-content">
+            <h2>SURVIVAL<br>GUIDE</h2>
+            <p>지능형 금융 생존 백서</p>
+            <span class="icon">📗</span>
+          </div>
+        </div>
+        <div class="guide-page guide-left">
+          <div class="guide-content">
+            <h3>[수행 지침]</h3>
+            <p>데이터 로딩 중...</p>
+            <div class="loading-line"></div>
+            <div class="loading-line" style="width: 80%"></div>
+          </div>
+        </div>
+        <div class="guide-page guide-right">
+          <div class="guide-content">
+            <h3>[행동 강령]</h3>
+            <p>데이터 로딩 중...</p>
+            <div class="loading-line"></div>
+            <div class="loading-line" style="width: 90%"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <button id="close-guide-btn" class="close-guide-btn">닫기 (CLOSE)</button>
+  </div>
+
+  <script type="module" src="/main.js"></script>
+</body>
+</html>
