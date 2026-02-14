@@ -124,17 +124,28 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function createCoinRain() {
-    for (let i = 0; i < 100; i++) { // significantly more coins
+    for (let i = 0; i < 80; i++) {
       const coin = document.createElement('div');
       coin.classList.add('coin');
       
-      // Randomize horizontal start
-      coin.style.left = (Math.random() * 95 + 2.5) + 'vw';
+      // 1. Randomize Position (Horizontal)
+      coin.style.left = Math.random() * 100 + 'vw';
       
-      // Randomize speed and delay for "rain" feel
-      const duration = Math.random() * 1.5 + 1.2; 
-      coin.style.animation = `coin-bounce ${duration}s linear forwards`;
-      coin.style.animationDelay = Math.random() * 1.5 + 's'; // Spread out the burst
+      // 2. Randomize Physics Parameters (CSS Variables)
+      const duration = Math.random() * 3 + 2; // 2s ~ 5s
+      const delay = Math.random() * 2;        // 0s ~ 2s
+      const scale = Math.random() * 0.5 + 0.6; // 0.6 ~ 1.1
+      const swayDir = Math.random() > 0.5 ? 1 : -1;
+
+      coin.style.setProperty('--fall-duration', duration + 's');
+      coin.style.setProperty('--fall-delay', delay + 's');
+      coin.style.setProperty('--coin-scale', scale);
+      coin.style.setProperty('--sway-dir', swayDir);
+      
+      // 3. Lifecycle Management (Cleanup)
+      coin.addEventListener('animationend', () => {
+        coin.remove();
+      });
       
       effectsLayer.appendChild(coin);
     }

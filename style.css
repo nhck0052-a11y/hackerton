@@ -525,52 +525,51 @@ body.mode-good .secondary-btn:hover {
   to { transform: translateY(-100vh) translateX(50px) rotate(360deg); opacity: 0; }
 }
 
-/* Coin Bounce Effect */
+/* Coin Shower Effect (Natural Physics) */
 .coin {
   position: absolute;
-  width: 25px; /* Smaller coins */
-  height: 25px;
+  top: -100px; /* Start above screen */
+  width: 35px;
+  height: 35px;
   background-image: url('/coin.png');
   background-size: 280%;
   background-position: center;
   border-radius: 50%;
-  border: 1px solid #d4af37; /* Thinner border for smaller size */
-  box-shadow: 0 2px 8px rgba(212, 175, 55, 0.4);
-  opacity: 0;
+  border: 2px solid #d4af37;
+  box-shadow: 0 4px 10px rgba(212, 175, 55, 0.5);
   z-index: 910;
+  
+  /* Physics Variables (set by JS) */
+  --fall-duration: 3s;
+  --fall-delay: 0s;
+  --coin-scale: 1;
+  --sway-dir: 1; /* 1 or -1 */
+
+  /* Initial State */
+  transform: scale(var(--coin-scale));
+  opacity: 1;
   will-change: transform;
+  
+  /* The Shower Animation */
+  animation: coin-shower var(--fall-duration) linear forwards;
+  animation-delay: var(--fall-delay);
 }
 
-@keyframes coin-bounce {
+@keyframes coin-shower {
   0% {
-    transform: translateY(-20vh) rotate(0deg) scale(0.8);
-    opacity: 0;
-    animation-timing-function: ease-in;
+    transform: translateY(0) translateX(0) rotateX(0deg) rotateZ(0deg) scale(var(--coin-scale));
   }
-  10% {
-    opacity: 1;
+  25% {
+    transform: translateY(25vh) translateX(calc(20px * var(--sway-dir))) rotateX(120deg) rotateZ(45deg) scale(var(--coin-scale));
   }
-  30% {
-    transform: translateY(85vh) rotate(180deg) scale(1.1); /* Hit 1 (Floor) */
-    animation-timing-function: ease-out;
-  }
-  55% {
-    transform: translateY(40vh) rotate(270deg) scale(1); /* Bounce Peak 1 */
-    animation-timing-function: ease-in;
+  50% {
+    transform: translateY(50vh) translateX(0) rotateX(240deg) rotateZ(90deg) scale(var(--coin-scale));
   }
   75% {
-    transform: translateY(90vh) rotate(360deg) scale(1.05); /* Hit 2 */
-    animation-timing-function: ease-out;
-  }
-  85% {
-    transform: translateY(70vh) rotate(400deg) scale(1); /* Bounce Peak 2 */
-    animation-timing-function: ease-in;
-  }
-  95% {
-    transform: translateY(95vh) rotate(420deg) scale(1); /* Hit 3 */
+    transform: translateY(75vh) translateX(calc(20px * var(--sway-dir) * -1)) rotateX(360deg) rotateZ(135deg) scale(var(--coin-scale));
   }
   100% {
-    transform: translateY(110vh) rotate(450deg); /* Fall off */
+    transform: translateY(110vh) translateX(0) rotateX(720deg) rotateZ(180deg) scale(var(--coin-scale));
   }
 }
 
