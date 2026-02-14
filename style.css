@@ -909,6 +909,29 @@ body.mode-good input { background: #fdfdfd; color: #333; border-color: #ddd; }
   display: none;
 }
 
+/* Vertical Length & Spacing */
+.vertical-spacer {
+  height: 80px; /* Increase vertical length between sections */
+}
+
+.content-article article {
+  display: flex;
+  flex-direction: column;
+  gap: 25px; /* More space between paragraphs */
+}
+
+.faq-list dt {
+  color: var(--highlight-color);
+  margin-top: 15px;
+}
+
+.faq-list dd {
+  color: #888;
+  padding-left: 10px;
+  border-left: 2px solid #333;
+  margin-top: 5px;
+}
+
 /* Footer & Contact Inline */
 .main-footer {
   margin-top: 50px;

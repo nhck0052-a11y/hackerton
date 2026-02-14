@@ -298,6 +298,24 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  // FAQ Toggle Logic
+  const toggleFaqBtn = document.getElementById('toggle-faq-btn');
+  const faqContent = document.getElementById('faq-content');
+
+  if (toggleFaqBtn && faqContent) {
+    toggleFaqBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      const isHidden = faqContent.classList.contains('hidden');
+      if (isHidden) {
+        faqContent.classList.remove('hidden');
+        toggleFaqBtn.classList.add('active');
+      } else {
+        faqContent.classList.add('hidden');
+        toggleFaqBtn.classList.remove('active');
+      }
+    });
+  }
+
   function resetEffects() {
     if (body) body.classList.remove('mode-bad', 'mode-good');
     if (effectsLayer) effectsLayer.innerHTML = '';
