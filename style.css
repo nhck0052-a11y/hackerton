@@ -861,6 +861,54 @@ body.mode-good input { background: #fdfdfd; color: #333; border-color: #ddd; }
   letter-spacing: 1px;
 }
 
+/* Collapsible Sections (How it Works, FAQ) */
+.collapsible-section {
+  margin: 20px 0;
+  border: 1px solid #333;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.collapsible-trigger {
+  width: 100%;
+  background: #111;
+  border: none;
+  color: var(--highlight-color);
+  padding: 15px 20px;
+  text-align: left;
+  font-family: var(--font-main);
+  font-size: 1.1rem;
+  font-weight: 900;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: background 0.3s;
+}
+
+.collapsible-trigger:hover {
+  background: #222;
+}
+
+.collapsible-trigger .arrow {
+  font-size: 0.8rem;
+  transition: transform 0.3s;
+}
+
+.collapsible-trigger.active .arrow {
+  transform: rotate(180deg);
+}
+
+.collapsible-content {
+  padding: 20px;
+  background: rgba(255, 255, 255, 0.02);
+  border-top: 1px solid #222;
+}
+
+.collapsible-content.hidden {
+  display: none;
+}
+
 /* Footer & Contact Inline */
 .main-footer {
   margin-top: 50px;

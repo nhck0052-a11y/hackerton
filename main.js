@@ -280,6 +280,24 @@ document.addEventListener('DOMContentLoaded', () => {
 
   setInterval(updateQuote, 5000);
 
+  // Algorithm Toggle Logic
+  const toggleAlgoBtn = document.getElementById('toggle-algo-btn');
+  const algoContent = document.getElementById('algo-content');
+
+  if (toggleAlgoBtn && algoContent) {
+    toggleAlgoBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      const isHidden = algoContent.classList.contains('hidden');
+      if (isHidden) {
+        algoContent.classList.remove('hidden');
+        toggleAlgoBtn.classList.add('active');
+      } else {
+        algoContent.classList.add('hidden');
+        toggleAlgoBtn.classList.remove('active');
+      }
+    });
+  }
+
   function resetEffects() {
     if (body) body.classList.remove('mode-bad', 'mode-good');
     if (effectsLayer) effectsLayer.innerHTML = '';
