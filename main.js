@@ -11,9 +11,12 @@ document.addEventListener('DOMContentLoaded', () => {
   const rTimestamp = document.getElementById('timestamp');
   const rRoast = document.getElementById('ai-roast-text');
   
-  // Prescription Elements
-  const rxGrade = document.getElementById('rx-grade');
-  const rxActions = document.getElementById('rx-actions');
+  // Financial Report Elements
+  const reportDate = document.getElementById('report-date');
+  const reportAnalysis = document.getElementById('report-analysis');
+  const reportPsychology = document.getElementById('report-psychology');
+  const reportActions = document.getElementById('report-actions');
+  const reportGrade = document.getElementById('report-grade');
   
   // Guide Book Elements
   const guideLink = document.getElementById('guide-link');
@@ -27,71 +30,99 @@ document.addEventListener('DOMContentLoaded', () => {
   const effectsLayer = document.getElementById('effects-layer');
   const body = document.body;
 
-  form.addEventListener('submit', (e) => {
-    e.preventDefault();
-    resetEffects();
+  if (form) {
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      resetEffects();
 
-    const item = document.getElementById('item').value;
-    const price = parseInt(document.getElementById('price').value);
-    const reason = document.getElementById('reason').value;
+      const item = document.getElementById('item').value;
+      const price = parseInt(document.getElementById('price').value);
+      const reason = document.getElementById('reason').value;
 
-    if (!item || isNaN(price) || !reason) return;
+      if (!item || isNaN(price) || !reason) return;
 
-    rItem.textContent = item.length > 15 ? item.substring(0, 15) + '...' : item;
-    rPrice.textContent = '₩' + price.toLocaleString();
-    rReason.textContent = reason;
-    rTotal.textContent = '₩' + price.toLocaleString();
-    rTimestamp.textContent = new Date().toLocaleDateString('ko-KR');
+      // Populate Receipt
+      rItem.textContent = item.length > 15 ? item.substring(0, 15) + '...' : item;
+      rPrice.textContent = '₩' + price.toLocaleString();
+      rReason.textContent = reason;
+      rTotal.textContent = '₩' + price.toLocaleString();
+      rTimestamp.textContent = new Date().toLocaleDateString('ko-KR');
 
-    const result = generateAnalysis(item, price, reason);
-    rRoast.textContent = ""; 
-    typeWriter(result.roast_message, rRoast); 
-    rxGrade.textContent = result.grade;
-    rxActions.innerHTML = result.action_items.map(action => `<li>${action}</li>`).join('');
-    
-    resultZone.classList.remove('hidden');
-    triggerEffects(result.type);
-    resultZone.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      // Generate Analysis
+      const result = generateAnalysis(item, price, reason);
+      
+      // Fill Receipt Roast
+      rRoast.textContent = ""; 
+      typeWriter(result.short_roast, rRoast); 
 
-    setTimeout(() => {
-      book.classList.add('open');
-    }, 500);
-  });
+      // Fill Financial Report
+      reportDate.textContent = `[제${new Date().getFullYear()}-${String(new Date().getMonth()+1).padStart(2,'0')}-${String(new Date().getDate()).padStart(2,'0')}호]`;
+      reportAnalysis.textContent = result.analysis;
+      reportPsychology.textContent = result.psychology;
+      reportActions.innerHTML = result.actions.map(action => `<li>${action}</li>`).join('');
+      reportGrade.textContent = result.grade;
 
-  homeBtn.addEventListener('click', () => {
-    book.classList.remove('open');
-    setTimeout(() => {
-        resultZone.classList.add('hidden');
-        form.reset();
-        resetEffects();
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-    }, 500);
-  });
+      // Grade Color
+      if (result.type === 'GOOD') {
+          reportGrade.style.color = '#00cc66';
+          reportGrade.style.borderColor = '#00cc66';
+      } else {
+          reportGrade.style.color = '#ff0055';
+          reportGrade.style.borderColor = '#ff0055';
+      }
+      
+      // Show Result
+      resultZone.classList.remove('hidden');
+      triggerEffects(result.type);
+      resultZone.scrollIntoView({ behavior: 'smooth', block: 'start' });
 
-  downloadBtn.addEventListener('click', () => {
-    html2canvas(book, { backgroundColor: null, scale: 2 }).then(canvas => {
-      const link = document.createElement('a');
-      link.download = 'gemini_report.png';
-      link.href = canvas.toDataURL();
-      link.click();
+      setTimeout(() => {
+        book.classList.add('open');
+      }, 500);
     });
-  });
+  }
 
-  // Guide Book Logic
-  guideLink.addEventListener('click', (e) => {
-    e.preventDefault();
-    guideOverlay.classList.remove('hidden');
-    setTimeout(() => {
-      guideBook.classList.add('open');
-    }, 100);
-  });
+  if (homeBtn) {
+    homeBtn.addEventListener('click', () => {
+      book.classList.remove('open');
+      setTimeout(() => {
+          resultZone.classList.add('hidden');
+          form.reset();
+          resetEffects();
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+      }, 500);
+    });
+  }
 
-  closeGuideBtn.addEventListener('click', () => {
-    guideBook.classList.remove('open');
-    setTimeout(() => {
-      guideOverlay.classList.add('hidden');
-    }, 800);
-  });
+  if (downloadBtn) {
+    downloadBtn.addEventListener('click', () => {
+      html2canvas(book, { backgroundColor: null, scale: 2 }).then(canvas => {
+        const link = document.createElement('a');
+        link.download = 'gemini_report.png';
+        link.href = canvas.toDataURL();
+        link.click();
+      });
+    });
+  }
+
+  if (guideLink) {
+    guideLink.addEventListener('click', (e) => {
+      e.preventDefault();
+      guideOverlay.classList.remove('hidden');
+      setTimeout(() => {
+        guideBook.classList.add('open');
+      }, 100);
+    });
+  }
+
+  if (closeGuideBtn) {
+    closeGuideBtn.addEventListener('click', () => {
+      guideBook.classList.remove('open');
+      setTimeout(() => {
+        guideOverlay.classList.add('hidden');
+      }, 800);
+    });
+  }
 
   function resetEffects() {
     body.classList.remove('mode-bad', 'mode-good');
@@ -109,7 +140,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const stamp = document.createElement('div');
         stamp.classList.add('stamp', 'bad');
         stamp.innerText = '탕진\nWARNING';
-        document.querySelector('.book-page.left .page-content').appendChild(stamp);
+        const leftPage = document.querySelector('.book-page.left .page-content');
+        if(leftPage) leftPage.appendChild(stamp);
       }, 1000);
 
       const marquee = document.createElement('div');
@@ -123,8 +155,9 @@ document.addEventListener('DOMContentLoaded', () => {
       setTimeout(() => {
         const stamp = document.createElement('div');
         stamp.classList.add('stamp', 'good');
-        stamp.innerHTML = 'Certified:<br>Smart Spender';
-        document.querySelector('.book-page.left .page-content').appendChild(stamp);
+        stamp.innerText = 'Certified:\nSmart Spender';
+        const leftPage = document.querySelector('.book-page.left .page-content');
+        if(leftPage) leftPage.appendChild(stamp);
       }, 1000);
       createCoinRain();
     }
@@ -161,7 +194,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 function generateAnalysis(item, price, reason) {
-  // 0. 시세 데이터 (Deep Learning from Provided Legacy & Performance Data)
+  // 0. 시세 데이터 (Full Database)
   const marketPrices = {
     // 📱 Apple iPhone Series
     '아이폰 6': 27500, 'iPhone 6': 27500, '아이폰 6 플러스': 30000, 'iPhone 6 Plus': 30000,
@@ -215,14 +248,40 @@ function generateAnalysis(item, price, reason) {
     '맥북 에어 2015': 180000, '맥북 에어 2017': 220000,
     '맥북 에어 M1': 725000, 'MacBook Air M1': 725000,
     '맥북 프로 16 인텔': 800000, 'MacBook Pro 16 Intel': 800000,
+    '맥북 프로 16': 3690000, '맥북프로 16': 3690000,
+    '맥북 프로 14': 2390000, '맥북프로 14': 2390000,
+    '맥북 에어 15': 1890000, '맥북에어 15': 1890000,
+    '맥북 에어 13': 1590000, '맥북에어 13': 1590000, '맥북에어': 1390000,
+    'LG 그램 프로': 2500000, '그램 프로': 2500000,
+    'LG 그램': 1800000, '그램': 1500000,
+    '갤럭시북 4 프로': 2100000, '갤북4': 1800000, '갤럭시북': 1500000,
 
-    // ☕ Food & General (Backup)
-    '커피': 5000, '마라탕': 12000, '치킨': 28000, '피자': 30000, '삼겹살': 18000, '회': 50000,
-    '택시': 12000, '영화': 15000, '넷플릭스': 17000, '유튜브': 14900
+    // ☕ Food & General (Expanded)
+    '커피': 5000, '아메리카노': 4500, '라떼': 5500, '스무디': 6500, '버블티': 6000,
+    '마라탕': 12000, '떡볶이': 15000, '치킨': 28000, '피자': 30000, '햄버거': 10000,
+    '국밥': 10000, '김치찌개': 9000, '된장찌개': 9000, '짜장면': 8000, '짬뽕': 9000, '탕수육': 20000,
+    '삼겹살': 18000, '갈비': 18000, '소고기': 40000, '한우': 50000, '스테이크': 50000,
+    '파스타': 18000, '리조또': 18000, '초밥': 25000, '회': 50000, '족발': 35000, '보쌈': 35000,
+    '소주': 5000, '맥주': 6000, '와인': 30000, '위스키': 50000, '칵테일': 15000,
+    '빵': 3000, '케이크': 35000, '디저트': 8000, '빙수': 12000, '아이스크림': 4000,
+    
+    // 🏠 Living & Fashion
+    '택시': 12000, '버스': 1500, '지하철': 1500, '기름': 50000, '주유': 50000,
+    '영화': 15000, '티켓': 15000, '전시회': 20000, '뮤지컬': 120000, '콘서트': 130000,
+    '책': 18000, '도서': 18000, '만화책': 7000, '문제집': 20000,
+    '헬스': 50000, '필라테스': 150000, '요가': 150000, '운동': 50000,
+    '넷플릭스': 17000, '유튜브': 14900, '구독': 10000, '멜론': 10000,
+    '생필품': 30000, '휴지': 15000, '샴푸': 15000, '치약': 10000,
+    '옷': 50000, '티셔츠': 35000, '맨투맨': 50000, '후드': 60000, '셔츠': 50000,
+    '바지': 60000, '청바지': 70000, '슬랙스': 50000, '치마': 40000,
+    '자켓': 150000, '코트': 200000, '패딩': 250000, '가디건': 80000,
+    '신발': 100000, '운동화': 120000, '구두': 150000, '부츠': 150000, '슬리퍼': 30000,
+    '가방': 200000, '백팩': 100000, '에코백': 30000, '지갑': 150000,
+    '화장품': 30000, '립스틱': 35000, '파운데이션': 50000, '향수': 150000
   };
 
   const food = ['마라탕', '커피', '치킨', '술', '밥', '떡볶이', '피자', '배달'].some(f => item.includes(f));
-  const tech = ['컴퓨터', '맥북', '폰', '아이폰', '갤럭시', '에어팟', '플스', '닌텐도'].some(t => item.includes(t));
+  const tech = ['컴퓨터', '맥북', '폰', '아이폰', '갤럭시', '에어팟', '플스', '닌텐도', '카메라', '드론'].some(t => item.includes(t));
   const goodItems = ['책', '강의', '기부', '저축', '운동', '영양제'].some(g => item.includes(g));
 
   let marketMatch = null;
@@ -233,30 +292,86 @@ function generateAnalysis(item, price, reason) {
     }
   }
 
-  let type = 'BAD', grade = 'F', roast = "", actions = [];
+  // --- ANALYSIS LOGIC ---
+  let type = 'BAD';
+  let grade = 'F';
+  let short_roast = "";
+  let analysis = ""; 
+  let psychology = ""; 
+  let actions = []; 
 
-  if (marketMatch && price <= marketPrices[marketMatch] * 0.7) {
-    type = 'GOOD'; grade = 'S';
-    roast = `대박! ${marketMatch}를 ${price.toLocaleString()}원에? 정가 ${(marketPrices[marketMatch]).toLocaleString()}원인데... 득템 인정!`;
-    actions = ["남은 돈 저축하기", "꿀팁 공유하기", "스스로 칭찬하기"];
-  } else if (marketMatch && price > marketPrices[marketMatch] * 1.2) {
-    const multiple = Math.floor(price / marketPrices[marketMatch]);
-    if (multiple >= 3) {
-      grade = 'F-'; roast = `${marketMatch} 정가 ${marketPrices[marketMatch].toLocaleString()}원인데 ${price.toLocaleString()}원? ${multiple}대는 샀겠다. 사기 아님?`;
-      actions = ["환불 요청", "소비자 고발", "멘탈 케어"];
-    } else {
-      grade = 'F'; roast = `${marketMatch}를 ${price.toLocaleString()}원에? 호구 잡혔네.`;
-      actions = ["최저가 검색 습관화", "영수증 파기"];
-    }
-  } else if (goodItems || (price < 5000)) {
-    type = 'GOOD'; grade = 'A'; roast = `오... ${item}? 합리적인 소비네. 칭찬해.`;
-    actions = ["이 흐름 유지하기", "저축하기"];
+  // 1. 기회비용 계산
+  const gukbapPrice = 10000;
+  const gukbapCount = (price / gukbapPrice).toFixed(1);
+  const hourlyWage = 10030; // 2025 Minimum Wage
+  const workHours = (price / hourlyWage).toFixed(1);
+
+  analysis = `이 돈(${price.toLocaleString()}원)이면 국밥 ${gukbapCount}그릇을 먹을 수 있으며, 최저시급 기준 약 ${workHours}시간을 숨만 쉬고 일해야 벌 수 있는 금액입니다.`;
+
+  // 2. 심리 진단
+  if (reason.includes('스트레스') || reason.includes('우울')) {
+    psychology = "전형적인 '감정적 회피형 소비'입니다. 현실의 압박을 결제 버튼으로 해소하려는 보상 심리가 작동했습니다.";
+  } else if (reason.includes('그냥') || reason.includes('예뻐서') || reason.includes('세일')) {
+    psychology = "뇌의 이성적 필터가 마비된 '도파민 중독형 소비'입니다. '세일'이라는 단어에 낚여 필요 없는 물건을 쟁여두는 것입니다.";
   } else {
-    roast = `${item}.. 굳이? 차라리 저축을 하지 그랬어?`;
-    actions = ["결제 전 심호흡", "일기 쓰기"];
+    psychology = "소비의 타당성을 스스로 합리화하고 있습니다. 정말 필요해서 산 것인지, 사고 싶어서 이유를 만든 것인지 냉정하게 자문해보십시오.";
   }
 
-  return { type, grade, roast_message: roast, action_items: actions };
+  // 3. 판정 로직 (Priority: Market Price > Good Items > Price Threshold) 
+  
+  // Case A: 득템 (시세보다 30% 이상 저렴)
+  if (marketMatch && price <= marketPrices[marketMatch] * 0.7) {
+    type = 'GOOD'; grade = 'S';
+    short_roast = "대박 득템! 지능형 소비자 인정.";
+    analysis += ` 하지만 정가 ${marketPrices[marketMatch].toLocaleString()}원 대비 30% 이상 저렴하게 구매하여, 시장 가격 왜곡을 간파한 훌륭한 '가치 투자'를 해냈습니다.`;
+    psychology = "철저한 시장 조사와 인내심이 결합된 '전략가형' 마인드입니다.";
+    actions = ["아낀 차액 즉시 저축하기", "주변에 구매 팁 전수하기", "자만하지 말고 다음 소비도 신중하게"];
+  }
+  // Case B: 호구 (시세보다 20% 이상 비쌈)
+  else if (marketMatch && price > marketPrices[marketMatch] * 1.2) {
+    type = 'BAD';
+    const multiple = Math.floor(price / marketPrices[marketMatch]);
+    if (multiple >= 3) {
+      grade = 'F-'; short_roast = `정가의 ${multiple}배? 사기 당한 거 아님?`;
+      analysis += ` 특히 시세보다 ${multiple}배 이상 비싼 '호구 비용'이 포함되어 있습니다. 이건 범죄 수준입니다.`;
+      actions = ["소비자 보호원 피해 구제 신청", "당장 환불 요청", "멘탈 케어 받기"];
+    } else {
+      grade = 'F'; short_roast = "호구 잡혔네. 2개 살 돈으로 1개 샀어.";
+      analysis += ` 남들보다 비싸게 주고 산 '정보 비대칭 비용'을 치르고 있습니다.`;
+      actions = ["가격 비교 사이트 즐겨찾기", "3일간 무지출 수행", "영수증 파쇄"];
+    }
+  }
+  // Case C: 저렴한 물건 (5000원 미만) - 관대함 적용
+  else if (price < 5000) {
+    type = 'GOOD'; grade = 'A-';
+    short_roast = "귀여운 소비네. 이 정도는 봐줌.";
+    analysis += ` 하지만 금액이 소소하여 자산에 큰 타격은 없습니다. '소확행'으로 인정합니다.`;
+    psychology = "작은 돈으로 기분을 전환하려는 소박한 시도입니다.";
+    actions = ["남은 돈 저금통에 넣기", "기분 좋게 하루 시작하기", "티끌 모아 태산 명심하기"];
+  }
+  // Case D: 유익한 소비
+  else if (goodItems) {
+    type = 'GOOD'; grade = 'A';
+    short_roast = "합리적인 소비. 칭찬해.";
+    analysis += ` 미래를 위한 투자이거나 가치 있는 곳에 사용된 '무해한 소비'입니다.`;
+    psychology = "자존감이 높고 자기 통제가 가능한 '안정형' 상태입니다.";
+    actions = ["꾸준한 자기계발 지속", "작은 성공 경험 기록하기", "주변에 긍정적 영향력 전파"];
+  }
+  // Case E: 일반적인 BAD 패턴
+  else {
+    if (tech) {
+      grade = 'D'; short_roast = "장비병 초기 증상. 실력은 장비탓이 아님.";
+      actions = ["산 물건 본전 뽑을 때까지 쓰기", "중고 감가상각 공부하기", "다음 달 할부금 걱정하기"];
+    } else if (food) {
+      grade = 'D-'; short_roast = "먹는 게 남는 거? 아니, 지방만 남음.";
+      actions = ["배달 앱 삭제", "직접 요리해서 식비 방어", "엥겔 지수 확인하기"];
+    } else {
+      grade = 'C'; short_roast = "애매한 소비. 있으면 좋지만 없어도 됨.";
+      actions = ["사용 빈도 체크하기", "불필요하면 당근마켓행", "가계부 기록 습관화"];
+    }
+  }
+
+  return { type, grade, short_roast, analysis, psychology, actions };
 }
 
 function typeWriter(text, element) {
