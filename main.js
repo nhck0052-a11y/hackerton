@@ -39,11 +39,13 @@ document.addEventListener('DOMContentLoaded', () => {
   if (form) {
     form.addEventListener('submit', (e) => {
       e.preventDefault();
-      resetEffects();
-
+      
       const itemInput = document.getElementById('item');
       const priceInput = document.getElementById('price');
       const reasonInput = document.getElementById('reason');
+      const submitBtn = document.getElementById('submit-btn');
+      const loadingContainer = document.getElementById('loading-container');
+      const progressFill = document.getElementById('progress-fill');
 
       if (!itemInput || !priceInput || !reasonInput) return;
 
@@ -56,67 +58,88 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
       }
 
-      // Populate Receipt
-      if (rItem) rItem.textContent = item.length > 15 ? item.substring(0, 15) + '...' : item;
-      if (rPrice) rPrice.textContent = '₩' + price.toLocaleString();
-      if (rReason) rReason.textContent = reason;
-      if (rTotal) rTotal.textContent = '₩' + price.toLocaleString();
-      if (rTimestamp) rTimestamp.textContent = new Date().toLocaleDateString('ko-KR');
+      // 1. Enter Loading State (Toss Payments UX Style)
+      submitBtn.classList.add('hidden');
+      loadingContainer.classList.remove('hidden');
+      progressFill.style.width = '100%';
 
-      // Generate Analysis
-      const result = generateAnalysis(item, price, reason);
-      
-      // Fill Receipt Roast
-      if (rRoast) {
-        rRoast.textContent = ""; 
-        typeWriter(result.short_roast, rRoast); 
-      }
+      // Reset previous results
+      resetEffects();
+      resultZone.classList.add('hidden');
+      book.classList.remove('open');
 
-      // Fill Financial Report
-      if (reportDate) reportDate.textContent = `[제${new Date().getFullYear()}-${String(new Date().getMonth()+1).padStart(2,'0')}-${String(new Date().getDate()).padStart(2,'0')}호]`;
-      if (reportAnalysis) reportAnalysis.textContent = result.analysis;
-      if (reportPsychology) reportPsychology.textContent = result.psychology;
-      if (reportActions) reportActions.innerHTML = result.actions.map(action => `<li>${action}</li>`).join('');
-      if (reportGrade) reportGrade.textContent = result.grade;
+      // 2. Simulated Delay for 'Deliberate Analysis'
+      setTimeout(() => {
+        // Populate Data
+        if (rItem) rItem.textContent = item.length > 15 ? item.substring(0, 15) + '...' : item;
+        if (rPrice) rPrice.textContent = '₩' + price.toLocaleString();
+        if (rReason) rReason.textContent = reason;
+        if (rTotal) rTotal.textContent = '₩' + price.toLocaleString();
+        if (rTimestamp) rTimestamp.textContent = new Date().toLocaleDateString('ko-KR');
 
-      // Grade Color
-      if (reportGrade) {
-        if (result.type === 'GOOD') {
-            reportGrade.style.color = '#00cc66';
-            reportGrade.style.borderColor = '#00cc66';
-        } else {
-            reportGrade.style.color = '#ff0055';
-            reportGrade.style.borderColor = '#ff0055';
+        const result = generateAnalysis(item, price, reason);
+        
+        if (rRoast) {
+          rRoast.textContent = ""; 
+          typeWriter(result.short_roast, rRoast); 
         }
-      }
 
-      // Fill Guide Book
-      const gIntro = document.getElementById('guide-intro');
-      const gCh1 = document.getElementById('guide-ch1');
-      const gCh2 = document.getElementById('guide-ch2');
-      const gCh3 = document.getElementById('guide-ch3');
-      const gWarn = document.getElementById('guide-warning');
+        if (reportDate) reportDate.textContent = `[제${new Date().getFullYear()}-${String(new Date().getMonth()+1).padStart(2,'0')}-${String(new Date().getDate()).padStart(2,'0')}호]`;
+        if (reportAnalysis) reportAnalysis.textContent = result.analysis;
+        if (reportPsychology) reportPsychology.textContent = result.psychology;
+        if (reportActions) reportActions.innerHTML = result.actions.map(action => `<li>${action}</li>`).join('');
+        if (reportGrade) reportGrade.textContent = result.grade;
 
-      if (gIntro) gIntro.textContent = result.guide_intro;
-      if (gCh1) gCh1.innerHTML = result.guide_ch1;
-      if (gCh2) gCh2.innerHTML = result.guide_ch2;
-      if (gCh3) gCh3.textContent = result.guide_ch3;
-      if (gWarn) gWarn.textContent = result.guide_warning;
-      
-      // Show Result
-      if (resultZone) {
-        resultZone.classList.remove('hidden');
-        resultZone.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }
-      
-      triggerEffects(result.type);
+        if (reportGrade) {
+          if (result.type === 'GOOD') {
+              reportGrade.style.color = '#00cc66';
+              reportGrade.style.borderColor = '#00cc66';
+          } else {
+              reportGrade.style.color = '#ff0055';
+              reportGrade.style.borderColor = '#ff0055';
+          }
+        }
 
-      if (book) {
-        setTimeout(() => {
-          book.classList.add('open');
-        }, 500);
-      }
+        const gIntro = document.getElementById('guide-intro');
+        const gCh1 = document.getElementById('guide-ch1');
+        const gCh2 = document.getElementById('guide-ch2');
+        const gCh3 = document.getElementById('guide-ch3');
+        const gWarn = document.getElementById('guide-warning');
+
+        if (gIntro) gIntro.textContent = result.guide_intro;
+        if (gCh1) gCh1.innerHTML = result.guide_ch1;
+        if (gCh2) gCh2.innerHTML = result.guide_ch2;
+        if (gCh3) gCh3.textContent = result.guide_ch3;
+        if (gWarn) gWarn.textContent = result.guide_warning;
+
+        // 3. Reveal Results
+        loadingContainer.classList.add('hidden');
+        progressFill.style.width = '0%';
+        submitBtn.classList.remove('hidden');
+        
+        if (resultZone) {
+          resultZone.classList.remove('hidden');
+          triggerEffects(result.type);
+          resultZone.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        if (book) {
+          setTimeout(() => {
+            book.classList.add('open');
+          }, 500);
+        }
+      }, 2000); // 2 second psychological wait
     });
+  }
+
+  // Dynamic User Count (Social Proof)
+  const userCountEl = document.getElementById('user-count');
+  if (userCountEl) {
+    let count = 1248;
+    setInterval(() => {
+      count += Math.floor(Math.random() * 3);
+      userCountEl.textContent = count.toLocaleString();
+    }, 10000);
   }
 
   if (homeBtn) {

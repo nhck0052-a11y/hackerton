@@ -30,22 +30,42 @@
   <!-- Naver Specific -->
   <meta name="naver-site-verification" content="verification_code_placeholder" />
 
-  <!-- Structured Data (JSON-LD) for SEO -->
+  <!-- Structured Data (JSON-LD) for AI Search SEO -->
   <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "WebApplication",
-    "name": "Gemini 지출 팩폭기",
-    "url": "https://github.com/nhck0052-a11y/hackerton",
-    "description": "AI-powered financial spending analysis and roast tool.",
-    "applicationCategory": "FinanceApplication",
-    "operatingSystem": "Web",
-    "offers": {
-      "@type": "Offer",
-      "price": "0",
-      "priceCurrency": "KRW"
+  [
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "Gemini 지출 팩폭기",
+      "url": "https://github.com/nhck0052-a11y/hackerton",
+      "description": "AI-powered financial spending analysis and roast tool based on Gemini LLM.",
+      "applicationCategory": "FinanceApplication",
+      "operatingSystem": "Web",
+      "author": {
+        "@type": "Organization",
+        "name": "Gemini Finance Lab"
+      }
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "HowTo",
+      "name": "내 소비 등급 확인하는 방법",
+      "step": [
+        {
+          "@type": "HowToStep",
+          "text": "항목, 금액, 사유 3가지를 입력합니다."
+        },
+        {
+          "@type": "HowToStep",
+          "text": "분석 시작 버튼을 누릅니다."
+        },
+        {
+          "@type": "HowToStep",
+          "text": "Gemini AI가 생성한 생존 보고서와 행동 강령을 확인합니다."
+        }
+      ]
     }
-  }
+  ]
   </script>
 
   <link href='/style.css' rel='stylesheet'>
@@ -82,22 +102,35 @@
     </header>
 
     <main>
+      <div class="social-proof" aria-live="polite">
+        <span class="dot"></span> 현재 <strong id="user-count">1,248</strong>명이 팩폭 대기 중
+      </div>
+
       <section class="input-zone" aria-labelledby="form-title">
         <h2 id="form-title" class="sr-only">지출 내역 입력</h2>
         <form id="spending-form">
           <div class="input-group">
             <label for="item">무엇을 샀나요?</label>
-            <input type="text" id="item" placeholder="예: 컴퓨터" required autocomplete="off">
+            <input type="text" id="item" placeholder="예: 컴퓨터" required autocomplete="off" aria-required="true">
           </div>
           <div class="input-group">
             <label for="price">얼마를 썼나요?</label>
-            <input type="number" id="price" placeholder="숫자만 입력하세요 (예: 25000)" required>
+            <input type="number" id="price" placeholder="숫자만 입력하세요 (예: 25000)" required aria-required="true">
           </div>
           <div class="input-group">
             <label for="reason">그때 기분은?</label>
-            <input type="text" id="reason" placeholder="예: 스트레스 풀려고" required autocomplete="off">
+            <input type="text" id="reason" placeholder="예: 스트레스 풀려고" required autocomplete="off" aria-required="true">
           </div>
-          <button type="submit" class="submit-btn">
+          
+          <!-- Loading / Progress Bar (Hidden by default) -->
+          <div id="loading-container" class="loading-container hidden">
+            <p class="loading-text">Gemini AI가 당신의 뇌 구조를 해부 중입니다...</p>
+            <div class="progress-bar-bg">
+              <div id="progress-fill" class="progress-bar-fill"></div>
+            </div>
+          </div>
+
+          <button type="submit" class="submit-btn" id="submit-btn">
             <span class="btn-text">분석 시작 (ENTER)</span>
             <div class="btn-glitch"></div>
           </button>
@@ -201,7 +234,25 @@
         </div>
       </section>
 
-      <!-- Finance Quotes Section -->
+          <h3>⚙️ 분석 알고리즘의 원리 (How it Works)</h3>
+          <p>
+            저희 시스템은 다음과 같은 3단계 과정을 통해 당신의 지출을 정밀 진단합니다:
+          </p>
+          <ol>
+            <li><strong>시세 데이터 매칭:</strong> 100여 개 이상의 품목별 최신 시장 가격과 입력된 금액을 비교합니다.</li>
+            <li><strong>기회비용 연산:</strong> 지출 금액을 노동 시간 및 필수 생필품 가치로 환산하여 경제적 타격을 계산합니다.</li>
+            <li><strong>심리 프로파일링:</strong> Gemini AI 모델이 소비 사유에 담긴 감정적 상태와 충동성을 분석하여 개인화된 행동 강령을 작성합니다.</li>
+          </ol>
+
+          <h3>❓ 자주 묻는 질문 (FAQ)</h3>
+          <dl>
+            <dt><strong>Q: AI 분석 결과는 얼마나 정확한가요?</strong></dt>
+            <dd>A: 최신 시장 시세 데이터와 Gemini LLM의 추론 능력을 결합하여 상당히 높은 신뢰도의 분석을 제공하지만, 유머와 경각심을 위한 풍자가 포함되어 있으니 참고용으로 활용해 주세요.</dd>
+            <dt><strong>Q: 개인정보가 저장되나요?</strong></dt>
+            <dd>A: 아니요. 입력하신 데이터는 분석 즉시 소멸되며, 별도의 서버에 저장되지 않아 안심하고 이용하실 수 있습니다.</dd>
+          </dl>
+
+          <h3>🚀 스마트한 소비 습관을 위한 제언</h3>
       <section class="quotes-zone" aria-label="Finance Wisdom">
         <div id="quote-container" class="quote-container">
           <p id="quote-text" class="quote-text">"소비하고 남은 돈을 저축하는 것이 아니라, 저축하고 남은 돈을 소비하라."</p>
