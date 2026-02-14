@@ -24,11 +24,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const homeBtn = document.getElementById('home-btn');
   const downloadBtn = document.getElementById('download-btn');
   
-  // Whitepaper Elements
-  const whitepaperLink = document.getElementById('whitepaper-link');
-  const whitepaperModal = document.getElementById('whitepaper-modal');
-  const closeModal = document.querySelector('.close-modal');
-
   form.addEventListener('submit', (e) => {
     e.preventDefault();
     resetEffects();
@@ -103,20 +98,18 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // Whitepaper Modal Logic
-  whitepaperLink.addEventListener('click', (e) => {
-    e.preventDefault();
-    whitepaperModal.classList.remove('hidden');
-  });
-
-  closeModal.addEventListener('click', () => {
-    whitepaperModal.classList.add('hidden');
-  });
-  
-  window.addEventListener('click', (e) => {
-    if (e.target === whitepaperModal) {
-      whitepaperModal.classList.add('hidden');
-    }
+  // Download Functionality
+  downloadBtn.addEventListener('click', () => {
+    const captureTarget = book;
+    html2canvas(captureTarget, {
+      backgroundColor: null, 
+      scale: 2
+    }).then(canvas => {
+      const link = document.createElement('a');
+      link.download = 'gemini_report.png';
+      link.href = canvas.toDataURL();
+      link.click();
+    });
   });
 
   function resetEffects() {
