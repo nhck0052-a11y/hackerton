@@ -63,38 +63,41 @@
       </section>
 
       <section id="result-zone" class="result-zone hidden">
-        <div class="receipt-printer">
-          <div class="receipt" id="receipt">
-            <div class="receipt-header">
-              <p>GEMINI AI POS SYSTEM</p>
-              <p>--------------------------------</p>
-              <p class="timestamp" id="timestamp">2026-02-14 12:00:00</p>
+        <div class="result-actions">
+          <div class="receipt-printer">
+            <div class="receipt" id="receipt">
+              <div class="receipt-header">
+                <p>GEMINI AI POS SYSTEM</p>
+                <p>--------------------------------</p>
+                <p class="timestamp" id="timestamp">2026-02-14 12:00:00</p>
+              </div>
+              <div class="receipt-body">
+                <div class="line-item">
+                  <span id="receipt-item">ITEM</span>
+                  <span id="receipt-price">0</span>
+                </div>
+                <div class="line-item reason-row">
+                  <small>NOTE: <span id="receipt-reason">Reason</span></small>
+                </div>
+                <p>--------------------------------</p>
+                <div class="total-row">
+                  <span>TOTAL DAMAGE</span>
+                  <span id="receipt-total">0</span>
+                </div>
+                <p>================================</p>
+                <div class="ai-analysis">
+                  <p class="ai-label">[ AI ANALYSIS RESULT ]</p>
+                  <p id="ai-roast-text" class="roast-text">ANALYZING...</p>
+                </div>
+                <div class="barcode">
+                  ||| || ||| | || |||
+                </div>
+                <p class="footer-msg">NO REFUNDS ON BAD CHOICES</p>
+              </div>
+              <div class="receipt-jagged-bottom"></div>
             </div>
-            <div class="receipt-body">
-              <div class="line-item">
-                <span id="receipt-item">ITEM</span>
-                <span id="receipt-price">0</span>
-              </div>
-              <div class="line-item reason-row">
-                <small>NOTE: <span id="receipt-reason">Reason</span></small>
-              </div>
-              <p>--------------------------------</p>
-              <div class="total-row">
-                <span>TOTAL DAMAGE</span>
-                <span id="receipt-total">0</span>
-              </div>
-              <p>================================</p>
-              <div class="ai-analysis">
-                <p class="ai-label">[ AI ANALYSIS RESULT ]</p>
-                <p id="ai-roast-text" class="roast-text">ANALYZING...</p>
-              </div>
-              <div class="barcode">
-                ||| || ||| | || |||
-              </div>
-              <p class="footer-msg">NO REFUNDS ON BAD CHOICES</p>
-            </div>
-            <div class="receipt-jagged-bottom"></div>
           </div>
+          <button id="home-btn" class="secondary-btn">다시 하기 (HOME)</button>
         </div>
       </section>
     </main>

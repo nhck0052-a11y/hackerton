@@ -14,6 +14,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const body = document.body;
   const effectsLayer = document.getElementById('effects-layer');
   const receiptContainer = document.querySelector('.receipt-printer'); // For stamp positioning
+  const homeBtn = document.getElementById('home-btn');
 
   form.addEventListener('submit', (e) => {
     e.preventDefault();
@@ -52,6 +53,23 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // Scroll to result
     resultZone.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+
+  homeBtn.addEventListener('click', () => {
+    // 1. Hide Result
+    resultZone.classList.add('hidden');
+    
+    // 2. Reset Form
+    form.reset();
+    
+    // 3. Reset Visuals
+    body.classList.remove('mode-bad', 'mode-good');
+    effectsLayer.innerHTML = '';
+    const oldStamp = document.querySelector('.stamp');
+    if (oldStamp) oldStamp.remove();
+    
+    // 4. Scroll to top
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   });
 
   function triggerEffects(type) {
