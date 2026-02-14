@@ -55,14 +55,21 @@ document.addEventListener('DOMContentLoaded', () => {
       rRoast.textContent = ""; 
       typeWriter(result.short_roast, rRoast); 
 
-      // Fill Financial Report
-      reportDate.textContent = `[제${new Date().getFullYear()}-${String(new Date().getMonth()+1).padStart(2,'0')}-${String(new Date().getDate()).padStart(2,'0')}호]`;
-      reportAnalysis.textContent = result.analysis;
-      reportPsychology.textContent = result.psychology;
-      reportActions.innerHTML = result.actions.map(action => `<li>${action}</li>`).join('');
-      reportGrade.textContent = result.grade;
+    // Fill Financial Survival Report (Right Page)
+    document.getElementById('report-date').textContent = `[제${new Date().getFullYear()}-${String(new Date().getMonth()+1).padStart(2,'0')}-${String(new Date().getDate()).padStart(2,'0')}호]`;
+    document.getElementById('report-analysis').textContent = result.analysis;
+    document.getElementById('report-psychology').textContent = result.psychology;
+    document.getElementById('report-actions').innerHTML = result.actions.map(action => `<li>${action}</li>`).join('');
+    document.getElementById('report-grade').textContent = result.grade;
+    
+    // Fill Guide Book (Deep Analysis)
+    document.getElementById('guide-intro').textContent = result.guide_intro;
+    document.getElementById('guide-ch1').innerHTML = result.guide_ch1; // Allow HTML for formatting
+    document.getElementById('guide-ch2').innerHTML = result.guide_ch2;
+    document.getElementById('guide-ch3').textContent = result.guide_ch3;
+    document.getElementById('guide-warning').textContent = result.guide_warning;
 
-      // Grade Color
+    // Set grade color based on result type
       if (result.type === 'GOOD') {
           reportGrade.style.color = '#00cc66';
           reportGrade.style.borderColor = '#00cc66';
@@ -371,7 +378,40 @@ function generateAnalysis(item, price, reason) {
     }
   }
 
-  return { type, grade, short_roast, analysis, psychology, actions };
+  // --- GUIDE BOOK CONTENT GENERATION ---
+  let guide_intro = "";
+  let guide_ch1 = "";
+  let guide_ch2 = "";
+  let guide_ch3 = "";
+  let guide_warning = "";
+
+  // Introduction Logic
+  if (type === 'GOOD') {
+    guide_intro = `현재 귀하의 금융 생존 확률은 '매우 높음(High Survival)' 단계입니다. 입력하신 소비 데이터(${item})는 자산 침식이 아닌 '자산 방어' 또는 '가치 투자'로 판명되었습니다. 귀하는 통제된 환경 속에서 합리적인 판단을 내리고 있습니다.`;
+  } else {
+    guide_intro = `경고: 현재 귀하의 금융 생존 확률은 '위험(Critical)' 수준으로 급락했습니다. 입력하신 지출(${item})은 귀하의 자산 방어벽을 무너뜨리는 '트로이의 목마'와 같습니다. 지금 즉시 지혈하지 않으면, 파산은 시간문제입니다.`;
+  }
+
+  // Chapter 1: Deep Analysis
+  guide_ch1 = `<strong>[기회비용의 실체]</strong><br>귀하가 지불한 ${price.toLocaleString()}원은 단순한 화폐가 아닙니다. 이는 약 ${workHours}시간의 노동을 통해 얻은 '생명력'이며, 국밥 ${gukbapCount}그릇에 해당하는 '생존 에너지'입니다.<br><br><strong>[심층 심리 부검]</strong><br>${psychology} 귀하의 무의식은 현재 '결핍'을 느끼고 있으며, 이를 물질로 채우려 하고 있습니다. 그러나 이는 '밑 빠진 독에 물 붓기'일 뿐입니다.`;
+
+  // Chapter 2: Action Plan (Narrative)
+  guide_ch2 = `귀하에게 필요한 것은 '위로'가 아니라 '규율'입니다.<br><br>`;
+  actions.forEach((act, index) => {
+    guide_ch2 += `<strong>${index + 1}. ${act}</strong><br>변명하지 말고 즉시 실행하십시오. 행동 없는 반성은 망상입니다.<br>`;
+  });
+
+  // Chapter 3: Verdict
+  guide_ch3 = `종합 판정 결과, 귀하의 이번 소비 등급은 [ ${grade} ] 입니다. 이는 단순한 점수가 아니라, 귀하의 경제적 자립 가능성을 나타내는 지표입니다.`;
+
+  // Warning
+  if (type === 'BAD') {
+    guide_warning = `[경고] 이 지침을 무시할 경우, 3개월 내에 카드 리볼빙의 늪에 빠질 확률이 98% 이상입니다.`;
+  } else {
+    guide_warning = `[조언] 자만은 금물입니다. 이 흐름을 잃지 말고 꾸준히 정진하십시오.`;
+  }
+
+  return { type, grade, short_roast, analysis, psychology, actions, guide_intro, guide_ch1, guide_ch2, guide_ch3, guide_warning };
 }
 
 function typeWriter(text, element) {
