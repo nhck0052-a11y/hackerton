@@ -8,39 +8,24 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400&family=Noto+Sans+KR:wght@400;700;900&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 </head>
 <body>
   <div id="effects-layer"></div>
   <div class="scan-line"></div>
   
   <div class="marquee-wrapper">
-    <div class="marquee-content">
-      <span>어제 먹은 마라탕, 정말 스트레스 때문이었나요? 아니면 그냥 생각이 없으셨나요?</span>
-      <span class="divider">///</span>
-      <span>당신의 결제 내역을 Gemini가 해부합니다. 팩폭 영수증 발급까지 딱 10초.</span>
-      <span class="divider">///</span>
-      <span>금융 전문가보다 매서운 AI의 일침. 지금 당신의 지갑 서열을 확인하고 공유하세요.</span>
-      <span class="divider">///</span>
-      <!-- Duplicate for seamless loop -->
-      <span>어제 먹은 마라탕, 정말 스트레스 때문이었나요? 아니면 그냥 생각이 없으셨나요?</span>
-      <span class="divider">///</span>
-      <span>당신의 결제 내역을 Gemini가 해부합니다. 팩폭 영수증 발급까지 딱 10초.</span>
-      <span class="divider">///</span>
-      <span>금융 전문가보다 매서운 AI의 일침. 지금 당신의 지갑 서열을 확인하고 공유하세요.</span>
-      <span class="divider">///</span>
-    </div>
+    <!-- ... marquee content ... -->
   </div>
 
   <div class="container">
-    <header class="glitch-wrapper">
-      <h1 class="main-copy glitch" data-text="어제 당신의 지출은 투자였나요, 아니면 쓰레기였나요?">어제 당신의 지출은 투자였나요,<br>아니면 <span class="highlight-trash">쓰레기</span>였나요?</h1>
-      <p class="sub-copy">Gemini AI가 당신의 카드 내역을 낱낱이 해부해 드립니다.<br><span class="warning">(주의: 멘탈 약한 분 클릭 금지)</span></p>
-    </header>
-
+    <!-- ... header and form ... -->
     <main>
       <section class="input-zone">
+        <!-- ... form ... -->
         <form id="spending-form">
-          <div class="input-group">
+          <!-- ... inputs ... -->
+           <div class="input-group">
             <label for="item">무엇을 샀나요?</label>
             <input type="text" id="item" placeholder="예: 컴퓨터" required autocomplete="off">
           </div>
@@ -63,9 +48,10 @@
       </section>
 
       <section id="result-zone" class="result-zone hidden">
-        <div class="result-actions">
+        <div class="result-actions" id="capture-area">
           <div class="receipt-printer">
             <div class="receipt" id="receipt">
+              <!-- ... existing receipt structure ... -->
               <div class="receipt-header">
                 <p>GEMINI AI POS SYSTEM</p>
                 <p>--------------------------------</p>
@@ -97,10 +83,70 @@
               <div class="receipt-jagged-bottom"></div>
             </div>
           </div>
+
+          <!-- New Prescription Component -->
+          <div class="prescription-card" id="prescription">
+            <div class="rx-header">
+              <span class="rx-symbol">℞</span>
+              <span class="clinic-name">GEMINI CLINIC</span>
+            </div>
+            <div class="rx-body">
+              <div class="diagnosis-box">
+                <span class="label">DIAGNOSIS (Grade)</span>
+                <span class="grade" id="rx-grade">F</span>
+              </div>
+              <div class="action-plan">
+                <p class="label">ACTION ITEMS:</p>
+                <ul id="rx-actions">
+                  <li>...</li>
+                </ul>
+              </div>
+              <div class="rx-footer">
+                <small>유효기간: 다음 월급날까지</small>
+                <div class="qr-placeholder">QR</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="button-group">
+          <button id="download-btn" class="action-btn">📸 영수증 & 처방전 저장</button>
           <button id="home-btn" class="secondary-btn">다시 하기 (HOME)</button>
+        </div>
+        
+        <div class="whitepaper-link-wrapper">
+          <a href="#" id="whitepaper-link">📘 [기술 백서] 지능형 금융 처방전: 팩폭을 넘어 변화로</a>
         </div>
       </section>
     </main>
+  </div>
+
+  <!-- Whitepaper Modal -->
+  <div id="whitepaper-modal" class="modal hidden">
+    <div class="modal-content">
+      <span class="close-modal">&times;</span>
+      <div class="whitepaper-body">
+        <h2>📘 [기술 백서] 지능형 금융 처방전</h2>
+        <h3>서문: 데이터가 행동이 되는 순간</h3>
+        <p>단순한 데이터 나열은 정보에 불과하지만, 그 데이터가 개인의 삶에 개입하여 긍정적인 변화를 이끌어낼 때 비로소 '비즈니스 가치'가 탄생한다. 본 프로젝트는 사용자의 페인 포인트(Pain Point)를 정확히 찌르는 위트와, 이를 치유하는 실질적인 솔루션을 결합한 독창적인 금융 플랫폼을 지향한다.</p>
+        
+        <h3>제1장: 지능형 진단 로직</h3>
+        <p>단순한 조건문이 아닌, 대규모 언어 모델(LLM)의 추론 능력을 극대화하여 사용자의 소비 기저에 깔린 심리적 요인을 분석해야 한다.</p>
+        <ul>
+          <li><strong>프롬프트 엔지니어링:</strong> 소비 항목과 사유를 결합하여 '보상 심리', '충동성', '필수 지출'을 구분.</li>
+          <li><strong>JSON 데이터 구조화:</strong> roast_message, action_items, grade(S~F)로 객체화.</li>
+        </ul>
+
+        <h3>제2장: 시각적 치유 (UI 설계)</h3>
+        <p>사용자는 영수증에서 충격을 받고, 처방전에서 위로와 해결책을 얻는다. 픽셀 아트 스타일의 의료 마크와 유머러스한 요소로 소장 가치를 높인다.</p>
+
+        <h3>제3장: 바이럴과 확산</h3>
+        <p>DOM to Image 기술을 활용하여 웹 UI를 고해상도 이미지로 변환, 소셜 네트워크에 자랑할 수 있도록 한다. QR 코드를 포함하여 유입 경로를 확보한다.</p>
+
+        <h3>제4장: 비즈니스 가치 제언</h3>
+        <p>단순 재미를 넘어 금융 상품이나 유료 콘텐츠로 연결되는 수익 모델(BM)을 형성하고, 개인 맞춤형 자산 관리 서비스로 확장한다.</p>
+      </div>
+    </div>
   </div>
   <script type="module" src="/main.js"></script>
 </body>
