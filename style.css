@@ -798,17 +798,3 @@ body.mode-good input { background: #fdfdfd; color: #333; border-color: #ddd; }
 
 /* Ensure hidden utility works if needed */
 .hidden { display: none !important; }
-
-/* Mobile */
-@media (max-width: 550px) {
-  .book-wrapper { height: auto; padding-bottom: 20px; perspective: none; }
-  .book {
-    width: 100%; height: auto; transform: none; display: flex; flex-direction: column; gap: 20px;
-  }
-  .book.open { transform: none; }
-  .book-cover { display: none; } /* Hide cover on mobile for simpler UX */
-  .book-page, .book-page.left, .book-page.right {
-    position: relative; width: 100%; height: auto; left: 0; top: 0; transform: none;
-    border: 1px solid #ccc;
-  }
-}
