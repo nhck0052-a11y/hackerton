@@ -528,16 +528,17 @@ body.mode-good .secondary-btn:hover {
 /* Coin Rain Effect */
 .coin {
   position: absolute;
-  width: 40px; /* Small coin size */
-  height: 40px;
+  width: 45px;
+  height: 45px;
   background-image: url('/coin.png');
-  background-size: 110%; /* Slightly zoom to hide edges */
+  background-size: 280%; /* Zoom in significantly to the center of the image */
   background-position: center;
-  border-radius: 50%; /* Make it round */
-  box-shadow: 0 4px 6px rgba(0,0,0,0.1); /* Lighter shadow for multiply mode */
+  border-radius: 50%; /* Perfect circle */
+  box-shadow: 0 4px 15px rgba(212, 175, 55, 0.6); /* Gold glow shadow */
   animation: fall-spin linear forwards;
   z-index: 910;
-  mix-blend-mode: multiply; /* Remove white background */
+  border: 2px solid #d4af37; /* Real gold-colored border to define the edge */
+  overflow: hidden;
 }
 
 @keyframes fall-spin {
