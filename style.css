@@ -24,7 +24,20 @@ body {
   display: flex;
   justify-content: center;
   align-items: flex-start;
-  padding-top: 60px; /* Increased padding to accommodate marquee */
+  padding-top: 60px;
+  transition: background-color 0.5s ease;
+}
+
+/* Effect Layers */
+#effects-layer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 900;
+  overflow: hidden;
 }
 
 /* CRT Scanline Effect */
@@ -149,6 +162,7 @@ header {
   border: 1px solid #333;
   border-radius: 4px;
   box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+  transition: all 0.3s ease;
 }
 
 .input-group {
@@ -330,6 +344,100 @@ input:focus {
   transform: rotate(180deg);
   margin-bottom: -10px; /* Push it outside the container */
 }
+
+/* ------------------- VISUAL EFFECTS ------------------- */
+
+/* 1. BAD MODE (SIREN) */
+body.mode-bad {
+  animation: siren-flash 0.8s infinite;
+}
+
+@keyframes siren-flash {
+  0%, 100% { background-color: #2a0000; } /* Dark Red */
+  50% { background-color: #500000; } /* Brighter Red */
+}
+
+body.mode-bad .scan-line {
+  background: linear-gradient(
+    to bottom,
+    rgba(255, 0, 0, 0),
+    rgba(255, 0, 0, 0) 50%,
+    rgba(255, 0, 0, 0.1) 50%,
+    rgba(255, 0, 0, 0.1)
+  );
+}
+
+.stamp {
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(-15deg) scale(2);
+  border: 5px solid #d00;
+  color: #d00;
+  font-size: 3rem;
+  font-weight: 900;
+  padding: 10px 20px;
+  text-transform: uppercase;
+  letter-spacing: 5px;
+  opacity: 0;
+  z-index: 1000;
+  border-radius: 10px;
+  mask-image: url('https://s3-us-west-2.amazonaws.com/s.cdpn.io/8399/grunge.png');
+  mask-size: 940px 600px;
+  mix-blend-mode: multiply;
+  animation: stamp-land 0.3s cubic-bezier(0.6, 0.04, 0.98, 0.335) forwards;
+  animation-delay: 1.5s; /* Wait for receipt */
+}
+
+@keyframes stamp-land {
+  0% { opacity: 0; transform: translate(-50%, -50%) rotate(-15deg) scale(2); }
+  100% { opacity: 0.8; transform: translate(-50%, -50%) rotate(-15deg) scale(1); }
+}
+
+/* 2. GOOD MODE (GOLD) */
+body.mode-good {
+  background-color: #fcf8e3; /* Light Cream Gold */
+  color: #333;
+}
+
+body.mode-good .scan-line {
+  display: none;
+}
+
+body.mode-good header .main-copy {
+  color: #d4af37; /* Gold */
+  text-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
+}
+
+body.mode-good .input-zone {
+  background: #fff;
+  border-color: #d4af37;
+  box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
+}
+
+body.mode-good input {
+  background: #fdfdfd;
+  color: #333;
+  border-color: #ddd;
+}
+
+body.mode-good .receipt {
+  border: 2px solid #d4af37;
+}
+
+/* Gold Confetti */
+.confetti {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  background-color: #ffd700;
+  animation: fall linear forwards;
+}
+
+@keyframes fall {
+  to { transform: translateY(100vh) rotate(720deg); }
+}
+
 
 /* Mobile Responsiveness */
 @media (max-width: 400px) {
