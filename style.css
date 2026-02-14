@@ -7,6 +7,7 @@
   --receipt-text: #1a1a1a;
   --font-main: 'Noto Sans KR', sans-serif;
   --font-mono: 'Courier Prime', monospace;
+  --good-color: #00cc66; /* Green */
 }
 
 * {
@@ -219,12 +220,6 @@ input:focus {
 }
 
 /* Receipt Styles */
-.result-zone {
-  display: flex;
-  justify-content: center;
-  perspective: 1000px;
-}
-
 .result-zone.hidden {
   display: none;
 }
@@ -241,33 +236,6 @@ input:focus {
   position: relative;
   width: 100%;
   max-width: 350px;
-}
-
-.secondary-btn {
-  padding: 12px 30px;
-  background: transparent;
-  color: var(--text-color);
-  border: 1px solid var(--text-color);
-  font-family: var(--font-mono);
-  font-size: 0.9rem;
-  cursor: pointer;
-  transition: all 0.2s;
-  margin-top: 10px;
-}
-
-.secondary-btn:hover {
-  background: var(--text-color);
-  color: var(--bg-color);
-}
-
-body.mode-good .secondary-btn {
-  border-color: #333;
-  color: #333;
-}
-
-body.mode-good .secondary-btn:hover {
-  background: #333;
-  color: #fff;
 }
 
 .receipt {
@@ -380,40 +348,89 @@ body.mode-good .secondary-btn:hover {
   margin-bottom: -10px; /* Push it outside the container */
 }
 
+.secondary-btn {
+  padding: 12px 30px;
+  background: transparent;
+  color: var(--text-color);
+  border: 1px solid var(--text-color);
+  font-family: var(--font-mono);
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  margin-top: 10px;
+}
+
+.secondary-btn:hover {
+  background: var(--text-color);
+  color: var(--bg-color);
+}
+
 /* ------------------- VISUAL EFFECTS ------------------- */
 
-/* 1. BAD MODE (SIREN) */
+/* 1. BAD MODE (SIREN + GLITCH + MARQUEE) */
 body.mode-bad {
-  animation: siren-flash 0.8s infinite;
+  animation: siren-flash 0.5s infinite;
+}
+
+body.mode-bad .container {
+  animation: glitch-anim-container 0.3s infinite;
 }
 
 @keyframes siren-flash {
-  0%, 100% { background-color: #2a0000; } /* Dark Red */
-  50% { background-color: #500000; } /* Brighter Red */
+  0%, 100% { background-color: #2a0000; }
+  50% { background-color: #500000; }
 }
 
-body.mode-bad .scan-line {
-  background: linear-gradient(
-    to bottom,
-    rgba(255, 0, 0, 0),
-    rgba(255, 0, 0, 0) 50%,
-    rgba(255, 0, 0, 0.1) 50%,
-    rgba(255, 0, 0, 0.1)
-  );
+@keyframes glitch-anim-container {
+  0% { transform: translate(0); }
+  20% { transform: translate(-1px, 1px); }
+  40% { transform: translate(-1px, -1px); }
+  60% { transform: translate(1px, 1px); }
+  80% { transform: translate(1px, -1px); }
+  100% { transform: translate(0); }
 }
 
+/* Specific Bad Mode Marquee */
+.bad-marquee {
+  position: fixed;
+  top: 50%;
+  left: 0;
+  width: 100%;
+  background: red;
+  color: white;
+  padding: 10px 0;
+  font-weight: 900;
+  font-size: 1.5rem;
+  transform: translateY(-50%) rotate(-5deg);
+  z-index: 950;
+  box-shadow: 0 0 20px rgba(255, 0, 0, 0.8);
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.bad-marquee-content {
+  display: inline-block;
+  animation: scroll-left-fast 5s linear infinite;
+}
+
+@keyframes scroll-left-fast {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+
+/* Stamps */
 .stamp {
   position: absolute;
   top: 40%;
   left: 50%;
   transform: translate(-50%, -50%) rotate(-15deg) scale(2);
-  border: 5px solid #d00;
-  color: #d00;
-  font-size: 3rem;
+  border: 5px solid;
+  font-size: 2rem;
   font-weight: 900;
   padding: 10px 20px;
   text-transform: uppercase;
-  letter-spacing: 5px;
+  letter-spacing: 2px;
   opacity: 0;
   z-index: 1000;
   border-radius: 10px;
@@ -421,7 +438,21 @@ body.mode-bad .scan-line {
   mask-size: 940px 600px;
   mix-blend-mode: multiply;
   animation: stamp-land 0.3s cubic-bezier(0.6, 0.04, 0.98, 0.335) forwards;
-  animation-delay: 1.5s; /* Wait for receipt */
+  animation-delay: 1.2s; 
+  text-align: center;
+  line-height: 1.2;
+}
+
+.stamp.bad {
+  border-color: #d00;
+  color: #d00;
+}
+
+.stamp.good {
+  border-color: var(--good-color);
+  color: var(--good-color);
+  font-size: 1.5rem;
+  transform: translate(-50%, -50%) rotate(-5deg) scale(2);
 }
 
 @keyframes stamp-land {
@@ -460,7 +491,28 @@ body.mode-good .receipt {
   border: 2px solid #d4af37;
 }
 
-/* Gold Confetti */
+body.mode-good .secondary-btn {
+  border-color: #333;
+  color: #333;
+}
+
+body.mode-good .secondary-btn:hover {
+  background: #333;
+  color: #fff;
+}
+
+/* Flying Emojis */
+.flying-emoji {
+  position: absolute;
+  font-size: 2rem;
+  animation: fly-away 3s linear forwards;
+}
+
+@keyframes fly-away {
+  to { transform: translateY(-100vh) translateX(50px) rotate(360deg); opacity: 0; }
+}
+
+/* Confetti */
 .confetti {
   position: absolute;
   width: 10px;
