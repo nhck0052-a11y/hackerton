@@ -23,6 +23,11 @@ document.addEventListener('DOMContentLoaded', () => {
   const receiptContainer = document.querySelector('.receipt-printer');
   const homeBtn = document.getElementById('home-btn');
   const downloadBtn = document.getElementById('download-btn');
+  
+  // Whitepaper Elements
+  const whitepaperLink = document.getElementById('whitepaper-link');
+  const whitepaperModal = document.getElementById('whitepaper-modal');
+  const closeModal = document.querySelector('.close-modal');
 
   form.addEventListener('submit', (e) => {
     e.preventDefault();
@@ -96,6 +101,22 @@ document.addEventListener('DOMContentLoaded', () => {
       link.href = canvas.toDataURL();
       link.click();
     });
+  });
+
+  // Whitepaper Modal Logic
+  whitepaperLink.addEventListener('click', (e) => {
+    e.preventDefault();
+    whitepaperModal.classList.remove('hidden');
+  });
+
+  closeModal.addEventListener('click', () => {
+    whitepaperModal.classList.add('hidden');
+  });
+  
+  window.addEventListener('click', (e) => {
+    if (e.target === whitepaperModal) {
+      whitepaperModal.classList.add('hidden');
+    }
   });
 
   function resetEffects() {

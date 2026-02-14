@@ -149,9 +149,51 @@
           <button id="home-btn" class="secondary-btn">다시 하기 (HOME)</button>
         </div>
       </section>
+      <div class="whitepaper-link-wrapper">
+        <a href="#" id="whitepaper-link">📘 [기술 백서] 지능형 금융 생존 지침: 탕진의 끝에서 자립으로</a>
+      </div>
     </main>
   </div>
-  <!-- Whitepaper modal removed as requested logic is now integrated -->
+  <!-- Whitepaper Modal -->
+  <div id="whitepaper-modal" class="modal hidden">
+    <div class="modal-content">
+      <span class="close-modal">&times;</span>
+      <div class="whitepaper-body">
+        <h2>📘 [기술 백서] 지능형 금융 생존 지침: 탕진의 끝에서 자립으로</h2>
+        
+        <h3>서문: 숫자가 아닌 삶을 관리하다</h3>
+        <p>단순한 가계부 기록은 과거의 흔적일 뿐이지만, 그 기록을 통해 미래의 생존 확률을 계산하는 것은 '전략'이다. 본 프로젝트는 경제적 압박 속에서 반드시 관리가 필요한 사용자를 위해, 현실을 직시하게 만드는 날카로운 통찰과 당장 오늘을 버텨낼 수 있는 실천적 지침을 제공하는 것을 목표로 한다.</p>
+        
+        <h3>제1장: 생존 확률 분석 로직 (Survival Probability Logic)</h3>
+        <p>인공지능은 사용자의 지출이 '생존을 위한 필수 지출'인지, 아니면 '현실 도피성 지출'인지 엄격하게 구분한다.</p>
+        <ul>
+          <li><strong>지출 우선순위 엔진:</strong> Gemini API는 사용자의 [항목, 금액]을 분석하여 해당 지출이 현재 자산 상태에서 차지하는 비중과 기회비용을 계산한다.</li>
+          <li><strong>감정적 지출 역치(Threshold) 측정:</strong> [사유]를 분석하여 스트레스나 충동에 의한 지출인 경우, 사용자의 심리적 방어 기제가 무너진 지점을 정확히 타격하는 피드백을 생성한다.</li>
+        </ul>
+
+        <h3>제2장: 현실 자각 UI (Wake-up Call UX)</h3>
+        <p>사용자가 자신의 상황을 객관적으로 바라볼 수 있도록 시각적 장치를 설계한다.</p>
+        <ul>
+          <li><strong>영수증의 재정의:</strong> 영수증은 단순히 구매 내역이 아니라, <strong>'내일의 나로부터 빌려온 자유'</strong>를 수치화한 문서로 정의한다.</li>
+          <li><strong>생존 등급 시스템:</strong> 자산 관리 상태에 따라 <strong>[안전 - 주의 - 경고 - 위험 - 파산 직전]</strong>의 5단계 생존 등급을 부여하여, 사용자마다 다른 시각적 긴장감을 제공한다.</li>
+        </ul>
+
+        <h3>제3장: 개인 맞춤형 생존 3계명 (Survival Commandments)</h3>
+        <p>사용자마다 처한 상황이 다르므로, AI는 각자의 지출 패턴에 최적화된 <strong>'실전 행동 강령'</strong>을 실시간으로 생성한다.</p>
+        <ul>
+          <li><strong>맞춤형 행동 제안:</strong> 식비 과다 사용자에게는 "식단 공유 커뮤니티 가입 및 도시락 생활화", 구독 서비스 과다 사용자에게는 "고정 지출 다이어트 및 디지털 미니멀리즘 실천" 등을 제안한다.</li>
+          <li><strong>이미지 기반 소장:</strong> 이 지침들은 '금융 생존 처방전' 형태로 렌더링 되어, 사용자가 스마트폰 배경화면 등으로 저장하여 매 순간 경각심을 유지할 수 있도록 돕는다.</li>
+        </ul>
+
+        <h3>제4장: 심리적 회복탄력성 지원 (Psychological Resilience)</h3>
+        <p>단순히 혼내는 것에 그치지 않고, 사용자가 다시 관리의 끈을 잡을 수 있도록 심리적 지지 기반을 구축한다.</p>
+        <ul>
+          <li><strong>성공 경험의 설계:</strong> "오늘 5,000원을 아꼈다면, 당신은 미래의 1시간을 샀습니다"와 같은 긍정적 피드백 루프를 생성한다.</li>
+          <li><strong>공동체적 유대:</strong> 자신의 생존 보고서를 공유함으로써 혼자가 아님을 느끼게 하고, 서로의 절약 노하우를 시각화하여 바이럴을 유도한다.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
   <script type="module" src="/main.js"></script>
 </body>
 </html>
