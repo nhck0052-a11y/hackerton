@@ -305,27 +305,36 @@ function generateAnalysis(item, price, reason) {
 
   // 3. 우선 순위 로직 적용
   
-  // Case A: 시세보다 훨씬 싸게 산 경우 (득템)
+  // Case A: 시세보다 훨씬 싸게 산 경우 (득템 - 30% 이상 저렴)
   if (marketMatch && price <= marketPrices[marketMatch] * 0.7) {
     type = 'GOOD';
     grade = 'S';
-    roast = `대박! ${marketMatch}를 ${price.toLocaleString()}원에? 너 혹시 당근마켓 고인물이야? 완전 득템 인정!`;
+    roast = `대박! ${marketMatch}를 ${price.toLocaleString()}원에? 정가가 ${(marketPrices[marketMatch]).toLocaleString()}원인데... 너 혹시 당근마켓 고인물이야? 완전 득템 인정!`;
     actions = [
       "남은 돈으로 저축해서 복리 효과 누리기",
       "주변에 저렴하게 사는 꿀팁 공유하기",
       "오늘만큼은 스스로를 칭찬해주기"
     ];
   }
-  // Case B: 시세보다 너무 비싸게 산 경우 (호구)
-  else if (marketMatch && price >= marketPrices[marketMatch] * 2) {
+  // Case B: 시세보다 비싸게 산 경우 (단계별 팩폭)
+  else if (marketMatch && price > marketPrices[marketMatch] * 1.2) {
     type = 'BAD';
-    grade = 'F';
-    roast = `${marketMatch} 하나에 ${price.toLocaleString()}원? 이 가격이면 2개는 샀겠다. 호구 잡힌 거 아니야?`;
-    actions = [
-      "다음부터는 가격 비교 사이트 필수 검색",
-      "영수증 찢어버리고 잊어버리기 (정신건강 보호)",
-      "친구한테 이 가격에 샀다고 말하지 말기"
-    ];
+    const multiple = Math.floor(price / marketPrices[marketMatch]);
+    const marketPriceStr = marketPrices[marketMatch].toLocaleString();
+
+    if (multiple >= 3) {
+        grade = 'F-';
+        roast = `와... 충격과 공포다. ${marketMatch} 정가가 ${marketPriceStr}원인데 ${price.toLocaleString()}원? 이 돈이면 ${multiple}대는 샀겠다. 혹시 사기 당한 거 아니지?`;
+        actions = ["소비자 고발 센터 상담하기", "당장 환불 요청하기", "멘탈 케어 받기"];
+    } else if (multiple >= 2) {
+        grade = 'F';
+        roast = `${marketMatch} 하나에 ${price.toLocaleString()}원? 정가가 ${marketPriceStr}원인데... 호구 잡혔네. 2개 살 돈으로 1개 샀어.`;
+        actions = ["가격 비교 사이트 즐겨찾기", "영수증 찢어서 증거 인멸", "다음엔 물어보고 사기"];
+    } else {
+        grade = 'D';
+        roast = `음... ${marketMatch} 시세(${marketPriceStr}원)보다 좀 비싸게 샀네. 급해서 산 거야? 조금만 찾아봤으면 아꼈을 텐데.`;
+        actions = ["다나와/에누리 검색 습관화", "급하게 결제 버튼 누르지 않기", "포인트 적립이라도 챙기기"];
+    }
   }
   // Case C: 아주 저렴하거나 필수/유익 소비
   else if (goodItems || (veryCheap && !subscription)) {
