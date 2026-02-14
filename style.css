@@ -24,7 +24,7 @@ body {
   display: flex;
   justify-content: center;
   align-items: flex-start;
-  padding-top: 40px;
+  padding-top: 60px; /* Increased padding to accommodate marquee */
 }
 
 /* CRT Scanline Effect */
@@ -44,6 +44,43 @@ body {
   background-size: 100% 4px;
   pointer-events: none;
   z-index: 999;
+}
+
+/* Marquee Effect */
+.marquee-wrapper {
+  position: fixed;
+  top: 15px;
+  left: 0;
+  width: 100%;
+  overflow: hidden;
+  z-index: 5;
+  pointer-events: none;
+  opacity: 0.5;
+  filter: blur(0.8px);
+  mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+}
+
+.marquee-content {
+  display: flex;
+  white-space: nowrap;
+  animation: scroll-left 25s linear infinite;
+}
+
+.marquee-content span {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  color: var(--highlight-color);
+  padding-right: 20px;
+}
+
+.marquee-content .divider {
+  color: var(--accent-color);
+  font-weight: bold;
+}
+
+@keyframes scroll-left {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
 }
 
 .container {
