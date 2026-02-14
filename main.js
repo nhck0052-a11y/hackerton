@@ -24,15 +24,173 @@ document.addEventListener('DOMContentLoaded', () => {
   const guideBook = document.getElementById('guide-book');
   const closeGuideBtn = document.getElementById('close-guide-btn');
 
-  // Contact Inline Logic
+  // Contact & Share Elements
   const openContactBtn = document.getElementById('open-contact-btn');
   const contactInlineSection = document.getElementById('contact-inline-section');
-  
-  // Share Toggle Logic
   const toggleShareBtn = document.getElementById('toggle-share-btn');
   const shareContainer = document.getElementById('share-container');
 
-  if (toggleShareBtn) {
+  // Nav/Download
+  const homeBtn = document.getElementById('home-btn');
+  const downloadBtn = document.getElementById('download-btn');
+  const effectsLayer = document.getElementById('effects-layer');
+  const body = document.body;
+
+  if (form) {
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      resetEffects();
+
+      const itemInput = document.getElementById('item');
+      const priceInput = document.getElementById('price');
+      const reasonInput = document.getElementById('reason');
+
+      if (!itemInput || !priceInput || !reasonInput) return;
+
+      const item = itemInput.value;
+      const price = parseInt(priceInput.value);
+      const reason = reasonInput.value;
+
+      if (!item || isNaN(price) || !reason) {
+        alert("모든 항목을 입력해주세요.");
+        return;
+      }
+
+      // Populate Receipt
+      if (rItem) rItem.textContent = item.length > 15 ? item.substring(0, 15) + '...' : item;
+      if (rPrice) rPrice.textContent = '₩' + price.toLocaleString();
+      if (rReason) rReason.textContent = reason;
+      if (rTotal) rTotal.textContent = '₩' + price.toLocaleString();
+      if (rTimestamp) rTimestamp.textContent = new Date().toLocaleDateString('ko-KR');
+
+      // Generate Analysis
+      const result = generateAnalysis(item, price, reason);
+      
+      // Fill Receipt Roast
+      if (rRoast) {
+        rRoast.textContent = ""; 
+        typeWriter(result.short_roast, rRoast); 
+      }
+
+      // Fill Financial Report
+      if (reportDate) reportDate.textContent = `[제${new Date().getFullYear()}-${String(new Date().getMonth()+1).padStart(2,'0')}-${String(new Date().getDate()).padStart(2,'0')}호]`;
+      if (reportAnalysis) reportAnalysis.textContent = result.analysis;
+      if (reportPsychology) reportPsychology.textContent = result.psychology;
+      if (reportActions) reportActions.innerHTML = result.actions.map(action => `<li>${action}</li>`).join('');
+      if (reportGrade) reportGrade.textContent = result.grade;
+
+      // Grade Color
+      if (reportGrade) {
+        if (result.type === 'GOOD') {
+            reportGrade.style.color = '#00cc66';
+            reportGrade.style.borderColor = '#00cc66';
+        } else {
+            reportGrade.style.color = '#ff0055';
+            reportGrade.style.borderColor = '#ff0055';
+        }
+      }
+
+      // Fill Guide Book
+      const gIntro = document.getElementById('guide-intro');
+      const gCh1 = document.getElementById('guide-ch1');
+      const gCh2 = document.getElementById('guide-ch2');
+      const gCh3 = document.getElementById('guide-ch3');
+      const gWarn = document.getElementById('guide-warning');
+
+      if (gIntro) gIntro.textContent = result.guide_intro;
+      if (gCh1) gCh1.innerHTML = result.guide_ch1;
+      if (gCh2) gCh2.innerHTML = result.guide_ch2;
+      if (gCh3) gCh3.textContent = result.guide_ch3;
+      if (gWarn) gWarn.textContent = result.guide_warning;
+      
+      // Show Result
+      if (resultZone) {
+        resultZone.classList.remove('hidden');
+        resultZone.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+      
+      triggerEffects(result.type);
+
+      if (book) {
+        setTimeout(() => {
+          book.classList.add('open');
+        }, 500);
+      }
+    });
+  }
+
+  if (homeBtn) {
+    homeBtn.addEventListener('click', () => {
+      if (book) book.classList.remove('open');
+      setTimeout(() => {
+          if (resultZone) resultZone.classList.add('hidden');
+          if (form) form.reset();
+          resetEffects();
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+      }, 500);
+    });
+  }
+
+  if (downloadBtn) {
+    downloadBtn.addEventListener('click', (e) => {
+      e.preventDefault(); // Prevent default link behavior
+      if (typeof html2canvas === 'undefined') {
+        alert("이미지 저장 라이브러리를 로딩 중입니다. 잠시 후 다시 시도해주세요.");
+        return;
+      }
+      if (book) {
+        html2canvas(book, { backgroundColor: null, scale: 2 }).then(canvas => {
+          const link = document.createElement('a');
+          link.download = 'gemini_report.png';
+          link.href = canvas.toDataURL();
+          link.click();
+        });
+      }
+    });
+  }
+
+  // Guide Book Interaction
+  if (guideLink) {
+    guideLink.addEventListener('click', (e) => {
+      e.preventDefault();
+      if (guideOverlay) guideOverlay.classList.remove('hidden');
+      if (guideBook) {
+        setTimeout(() => {
+          guideBook.classList.add('open');
+        }, 100);
+      }
+    });
+  }
+
+  if (closeGuideBtn) {
+    closeGuideBtn.addEventListener('click', () => {
+      if (guideBook) guideBook.classList.remove('open');
+      if (guideOverlay) {
+        setTimeout(() => {
+          guideOverlay.classList.add('hidden');
+        }, 800);
+      }
+    });
+  }
+
+  // Contact Toggle
+  if (openContactBtn && contactInlineSection) {
+    openContactBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      if (contactInlineSection.classList.contains('hidden')) {
+        contactInlineSection.classList.remove('hidden');
+        setTimeout(() => { contactInlineSection.classList.add('open'); }, 10);
+        openContactBtn.textContent = "🤝 닫기";
+      } else {
+        contactInlineSection.classList.remove('open');
+        setTimeout(() => { contactInlineSection.classList.add('hidden'); }, 500);
+        openContactBtn.textContent = "🤝 비즈니스 및 제휴 문의";
+      }
+    });
+  }
+
+  // Share Toggle
+  if (toggleShareBtn && shareContainer) {
     toggleShareBtn.addEventListener('click', (e) => {
       e.preventDefault();
       if (shareContainer.classList.contains('hidden')) {
@@ -47,30 +205,9 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  if (openContactBtn) {
-    openContactBtn.addEventListener('click', (e) => {
-      e.preventDefault();
-      // Toggle visibility
-      if (contactInlineSection.classList.contains('hidden')) {
-        contactInlineSection.classList.remove('hidden');
-        // Slight delay to allow display:block to apply before opacity transition
-        setTimeout(() => {
-          contactInlineSection.classList.add('open');
-        }, 10);
-        openContactBtn.textContent = "🤝 닫기";
-      } else {
-        contactInlineSection.classList.remove('open');
-        setTimeout(() => {
-          contactInlineSection.classList.add('hidden');
-        }, 500); // Wait for transition
-        openContactBtn.textContent = "🤝 비즈니스 및 제휴 문의";
-      }
-    });
-  }
-
   function resetEffects() {
-    body.classList.remove('mode-bad', 'mode-good');
-    effectsLayer.innerHTML = '';
+    if (body) body.classList.remove('mode-bad', 'mode-good');
+    if (effectsLayer) effectsLayer.innerHTML = '';
     const oldStamps = document.querySelectorAll('.stamp');
     oldStamps.forEach(s => s.remove());
     const oldMarquees = document.querySelectorAll('.bad-marquee');
@@ -79,7 +216,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function triggerEffects(type) {
     if (type === 'BAD') {
-      body.classList.add('mode-bad');
+      if (body) body.classList.add('mode-bad');
       setTimeout(() => {
         const stamp = document.createElement('div');
         stamp.classList.add('stamp', 'bad');
@@ -92,10 +229,12 @@ document.addEventListener('DOMContentLoaded', () => {
       marquee.classList.add('bad-marquee');
       const warnText = "⚠ 경고: 통장 잔고 비상! 지갑 심폐소생술 필요 ⚠ 💸 내 돈 어디갔니? 💸 ";
       marquee.innerHTML = `<div class="bad-marquee-track"><span>${warnText.repeat(10)}</span><span>${warnText.repeat(10)}</span></div>`;
-      document.body.appendChild(marquee);
+      if (body) document.body.appendChild(marquee);
+      
       createFlyingEmojis('💸');
+
     } else if (type === 'GOOD') {
-      body.classList.add('mode-good');
+      if (body) body.classList.add('mode-good');
       setTimeout(() => {
         const stamp = document.createElement('div');
         stamp.classList.add('stamp', 'good');
@@ -103,11 +242,13 @@ document.addEventListener('DOMContentLoaded', () => {
         const leftPage = document.querySelector('.book-page.left .page-content');
         if(leftPage) leftPage.appendChild(stamp);
       }, 1000);
+      
       createCoinRain();
     }
   }
 
   function createCoinRain() {
+    if (!effectsLayer) return;
     for (let i = 0; i < 80; i++) {
       const coin = document.createElement('div');
       coin.classList.add('coin');
@@ -125,6 +266,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function createFlyingEmojis(emoji) {
+    if (!effectsLayer) return;
     for (let i = 0; i < 20; i++) {
       const el = document.createElement('div');
       el.classList.add('flying-emoji');
