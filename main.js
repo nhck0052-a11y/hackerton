@@ -24,11 +24,40 @@ document.addEventListener('DOMContentLoaded', () => {
   const guideBook = document.getElementById('guide-book');
   const closeGuideBtn = document.getElementById('close-guide-btn');
 
+  // Contact Modal Elements
+  const openContactBtn = document.getElementById('open-contact-btn');
+  const contactModal = document.getElementById('contact-modal');
+  const closeContactBtn = document.getElementById('close-contact-btn');
+
   // Nav/Download
   const homeBtn = document.getElementById('home-btn');
   const downloadLink = document.getElementById('download-link');
   const effectsLayer = document.getElementById('effects-layer');
   const body = document.body;
+
+  // Contact Modal Logic
+  if (openContactBtn) {
+    openContactBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      contactModal.classList.remove('hidden');
+    });
+  }
+
+  if (closeContactBtn) {
+    closeContactBtn.addEventListener('click', () => {
+      contactModal.classList.add('hidden');
+    });
+  }
+
+  window.addEventListener('click', (e) => {
+    if (e.target === contactModal) {
+      contactModal.classList.add('hidden');
+    }
+    // Also handle whitepaper modal outside click here if needed or separate
+    if (e.target === guideOverlay) { // Assuming guideOverlay logic exists
+       // guide close logic is handled by guide close button mostly, but good to have
+    }
+  });
 
   if (form) {
     form.addEventListener('submit', (e) => {

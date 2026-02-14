@@ -723,55 +723,61 @@ body.mode-good input { background: #fdfdfd; color: #333; border-color: #ddd; }
 }
 @keyframes fly-away { to { transform: translateY(-100vh) translateX(50px) rotate(360deg); opacity: 0; } }
 
-/* Contact Zone (Affiliate Inquiry) */
-.contact-zone {
+/* Footer & Contact Modal */
+.main-footer {
   margin-top: 50px;
-  background: #111;
-  padding: 30px;
-  border: 1px solid #333;
-  border-radius: 8px;
   text-align: center;
+  padding-bottom: 20px;
+  border-top: 1px solid #333;
+  padding-top: 20px;
 }
 
-.contact-zone h3 {
-  font-size: 1.2rem;
+.main-footer p {
+  color: #666;
+  font-size: 0.8rem;
+  margin-bottom: 10px;
+}
+
+.footer-link {
+  background: none;
+  border: 1px solid #444;
+  color: #888;
+  padding: 8px 15px;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: all 0.2s;
+}
+
+.footer-link:hover {
+  border-color: var(--highlight-color);
+  color: var(--highlight-color);
+}
+
+/* Contact Modal Specifics */
+.contact-content {
+  text-align: center;
+  border-top: 5px solid var(--highlight-color);
+}
+
+.contact-content h3 {
+  font-size: 1.5rem;
   margin-bottom: 10px;
   color: var(--highlight-color);
 }
 
-.contact-zone p {
-  font-size: 0.85rem;
-  color: #888;
+.contact-content p {
   margin-bottom: 20px;
+  color: #555;
 }
 
 .contact-form {
   text-align: left;
-  max-width: 400px;
-  margin: 0 auto;
 }
 
 .contact-form textarea {
-  width: 100%;
-  padding: 12px;
-  background: #000;
-  border: 1px solid #444;
-  color: #fff;
-  font-family: var(--font-mono);
-  font-size: 0.9rem;
-  outline: none;
-  min-height: 100px;
-  resize: vertical;
-}
-
-.contact-form textarea:focus {
-  border-color: var(--highlight-color);
-}
-
-.submit-btn.mini {
-  padding: 10px;
-  font-size: 0.9rem;
-  margin-top: 10px;
+  min-height: 120px;
 }
 
 /* Mobile */
