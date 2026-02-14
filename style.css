@@ -525,28 +525,63 @@ body.mode-good .secondary-btn:hover {
   to { transform: translateY(-100vh) translateX(50px) rotate(360deg); opacity: 0; }
 }
 
-/* Coin Rain Effect */
+/* Coin Bounce & Glitch Effect */
 .coin {
   position: absolute;
-  width: 45px;
-  height: 45px;
+  width: 50px;
+  height: 50px;
   background-image: url('/coin.png');
-  background-size: 280%; /* Zoom in significantly to the center of the image */
+  background-size: 280%;
   background-position: center;
-  border-radius: 50%; /* Perfect circle */
-  box-shadow: 0 4px 15px rgba(212, 175, 55, 0.6); /* Gold glow shadow */
-  animation: fall-spin linear forwards;
+  border-radius: 50%;
+  border: 2px solid #d4af37;
+  box-shadow: 0 4px 15px rgba(212, 175, 55, 0.6);
+  opacity: 0; /* Start invisible */
   z-index: 910;
-  border: 2px solid #d4af37; /* Real gold-colored border to define the edge */
-  overflow: hidden;
+  will-change: transform, filter;
+  /* Animation defined in JS for variable speeds */
 }
 
-@keyframes fall-spin {
-  0% { 
-    transform: translateY(-50px) rotateX(0deg) rotate(0deg); 
+@keyframes coin-bounce {
+  0% {
+    transform: translateY(-20vh) rotate(0deg) scale(0.8);
+    opacity: 0;
+    animation-timing-function: ease-in;
   }
-  100% { 
-    transform: translateY(110vh) rotateX(360deg) rotate(180deg); 
+  10% {
+    opacity: 1;
+  }
+  30% {
+    transform: translateY(85vh) rotate(180deg) scale(1.1); /* Hit 1 (Floor) */
+    animation-timing-function: ease-out;
+    filter: hue-rotate(90deg) brightness(200%) drop-shadow(5px 0px red); /* Glitch */
+  }
+  35% {
+    filter: none; /* Reset glitch */
+  }
+  55% {
+    transform: translateY(40vh) rotate(270deg) scale(1); /* Bounce Peak 1 */
+    animation-timing-function: ease-in;
+  }
+  75% {
+    transform: translateY(90vh) rotate(360deg) scale(1.05); /* Hit 2 */
+    animation-timing-function: ease-out;
+    filter: hue-rotate(-90deg) brightness(150%) drop-shadow(-5px 0px blue); /* Glitch */
+  }
+  78% {
+    filter: none;
+  }
+  85% {
+    transform: translateY(70vh) rotate(400deg) scale(1); /* Bounce Peak 2 */
+    animation-timing-function: ease-in;
+  }
+  95% {
+    transform: translateY(95vh) rotate(420deg) scale(1); /* Hit 3 */
+    filter: invert(1); /* Mini Glitch */
+  }
+  100% {
+    transform: translateY(110vh) rotate(450deg); /* Fall off */
+    filter: none;
   }
 }
 
