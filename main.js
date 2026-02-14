@@ -118,21 +118,23 @@ document.addEventListener('DOMContentLoaded', () => {
         receiptContainer.appendChild(stamp);
       }, 1500);
       
-      // 3. CONFETTI
-      createConfetti();
+      // 3. COIN RAIN
+      createCoinRain();
     }
   }
 
-  function createConfetti() {
-    const colors = ['#ffd700', '#f0e68c', '#daa520', '#fff', '#00cc66'];
-    for (let i = 0; i < 50; i++) {
-      const confetti = document.createElement('div');
-      confetti.classList.add('confetti');
-      confetti.style.left = Math.random() * 100 + 'vw';
-      confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
-      confetti.style.animationDuration = (Math.random() * 2 + 3) + 's';
-      confetti.style.opacity = Math.random();
-      effectsLayer.appendChild(confetti);
+  function createCoinRain() {
+    for (let i = 0; i < 40; i++) {
+      const coin = document.createElement('div');
+      coin.classList.add('coin');
+      coin.style.left = Math.random() * 100 + 'vw';
+      
+      // Randomize animation duration and delay for natural feel
+      const duration = Math.random() * 2 + 2; // 2-4s
+      coin.style.animationDuration = duration + 's';
+      coin.style.animationDelay = Math.random() * 2 + 's';
+      
+      effectsLayer.appendChild(coin);
     }
   }
 

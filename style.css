@@ -220,7 +220,6 @@ input:focus {
 }
 
 /* Receipt Styles */
-/* Added back proper perspective container */
 .result-zone {
   display: flex;
   justify-content: center;
@@ -526,19 +525,28 @@ body.mode-good .secondary-btn:hover {
   to { transform: translateY(-100vh) translateX(50px) rotate(360deg); opacity: 0; }
 }
 
-/* Confetti */
-.confetti {
+/* Coin Rain Effect */
+.coin {
   position: absolute;
-  width: 10px;
-  height: 10px;
-  background-color: #ffd700;
-  animation: fall linear forwards;
+  width: 40px; /* Small coin size */
+  height: 40px;
+  background-image: url('/coin.png');
+  background-size: cover;
+  background-position: center;
+  border-radius: 50%; /* Make it round to cut the image */
+  box-shadow: 0 4px 6px rgba(0,0,0,0.3); /* Subtle shadow */
+  animation: fall-spin linear forwards;
+  z-index: 910;
 }
 
-@keyframes fall {
-  to { transform: translateY(100vh) rotate(720deg); }
+@keyframes fall-spin {
+  0% { 
+    transform: translateY(-50px) rotateX(0deg) rotate(0deg); 
+  }
+  100% { 
+    transform: translateY(110vh) rotateX(360deg) rotate(180deg); 
+  }
 }
-
 
 /* Mobile Responsiveness */
 @media (max-width: 400px) {
