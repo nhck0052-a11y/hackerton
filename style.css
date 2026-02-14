@@ -780,6 +780,11 @@ body.mode-good input { background: #fdfdfd; color: #333; border-color: #ddd; }
   min-height: 120px;
 }
 
+/* Ensure modal hidden state is enforced */
+.modal.hidden {
+  display: none !important;
+}
+
 /* Mobile */
 @media (max-width: 550px) {
   .book-wrapper { height: auto; padding-bottom: 20px; perspective: none; }
